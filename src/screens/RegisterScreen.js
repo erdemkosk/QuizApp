@@ -1,28 +1,31 @@
-import React, { memo, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import Background from "../components/Background";
-import Logo from "../components/Logo";
-import Header from "../components/Header";
-import Button from "../components/Button";
-import TextInput from "../components/TextInput";
-import BackButton from "../components/BackButton";
-import { theme } from "../core/theme";
+import React, { memo, useState } from 'react';
+import {
+  View, Text, StyleSheet, TouchableOpacity
+} from 'react-native';
+import Background from '../components/Background';
+import Logo from '../components/Logo';
+import Header from '../components/Header';
+import Button from '../components/Button';
+import TextInput from '../components/TextInput';
+import BackButton from '../components/BackButton';
+import { theme } from '../core/theme';
 import {
   emailValidator,
   passwordValidator,
   nameValidator
-} from "../core/utils";
-import { signInUser } from "../api/auth-api";
-import Toast from "../components/Toast";
+} from '../core/utils';
+import { signInUser } from '../api/auth-api';
+import Toast from '../components/Toast';
+import { postMemberRegister } from '../controllers/member';
 
 const RegisterScreen = ({ navigation }) => {
-  const [name, setName] = useState({ value: "", error: "" });
-  const [email, setEmail] = useState({ value: "", error: "" });
-  const [password, setPassword] = useState({ value: "", error: "" });
+  const [name, setName] = useState({ value: '', error: '' });
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
-  const _onSignUpPressed = async () => {
+  const onSignUpPressed = async () => {
     if (loading) return;
 
     const nameError = nameValidator(name.value);
@@ -38,11 +41,15 @@ const RegisterScreen = ({ navigation }) => {
 
     setLoading(true);
 
-    const response = await signInUser({
-      name: name.value,
+    const response = await postMemberRegister({
       email: email.value,
-      password: password.value
+      password: password.value,
+      nameSurname: name.value
     });
+
+    if (response.error) {
+      setError(response.error);
+    }
 
     if (response.error) {
       setError(response.error);
@@ -53,17 +60,17 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("HomeScreen")} />
+      <BackButton goBack={() => navigation.navigate('HomeScreen')} />
 
       <Logo />
 
-      <Header>Create Account</Header>
+      <Header>Hesap Oluştur</Header>
 
       <TextInput
-        label="Name"
+        label="İsim"
         returnKeyType="next"
         value={name.value}
-        onChangeText={text => setName({ value: text, error: "" })}
+        onChangeText={(text) => setName({ value: text, error: '' })}
         error={!!name.error}
         errorText={name.error}
       />
@@ -72,7 +79,7 @@ const RegisterScreen = ({ navigation }) => {
         label="Email"
         returnKeyType="next"
         value={email.value}
-        onChangeText={text => setEmail({ value: text, error: "" })}
+        onChangeText={(text) => setEmail({ value: text, error: '' })}
         error={!!email.error}
         errorText={email.error}
         autoCapitalize="none"
@@ -82,10 +89,10 @@ const RegisterScreen = ({ navigation }) => {
       />
 
       <TextInput
-        label="Password"
+        label="Şifre"
         returnKeyType="done"
         value={password.value}
-        onChangeText={text => setPassword({ value: text, error: "" })}
+        onChangeText={(text) => setPassword({ value: text, error: '' })}
         error={!!password.error}
         errorText={password.error}
         secureTextEntry
@@ -95,20 +102,20 @@ const RegisterScreen = ({ navigation }) => {
       <Button
         loading={loading}
         mode="contained"
-        onPress={_onSignUpPressed}
+        onPress={onSignUpPressed}
         style={styles.button}
       >
-        Sign Up
+        Hesap Oluştur
       </Button>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
-          <Text style={styles.link}>Login</Text>
+        <Text style={styles.label}>Zaten hesabınız var mı? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+          <Text style={styles.link}>Giriş Yapın</Text>
         </TouchableOpacity>
       </View>
 
-      <Toast message={error} onDismiss={() => setError("")} />
+      <Toast message={error} onDismiss={() => setError('')} />
     </Background>
   );
 };
@@ -121,11 +128,11 @@ const styles = StyleSheet.create({
     marginTop: 24
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 4
   },
   link: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: theme.colors.primary
   }
 });

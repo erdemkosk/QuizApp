@@ -1,23 +1,25 @@
-import React, { memo, useState } from "react";
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
-import Background from "../components/Background";
-import Logo from "../components/Logo";
-import Header from "../components/Header";
-import Button from "../components/Button";
-import TextInput from "../components/TextInput";
-import BackButton from "../components/BackButton";
-import { theme } from "../core/theme";
-import { emailValidator, passwordValidator } from "../core/utils";
-import { loginUser } from "../api/auth-api";
-import Toast from "../components/Toast";
+import React, { memo, useState } from 'react';
+import {
+  TouchableOpacity, StyleSheet, Text, View
+} from 'react-native';
+import Background from '../components/Background';
+import Logo from '../components/Logo';
+import Header from '../components/Header';
+import Button from '../components/Button';
+import TextInput from '../components/TextInput';
+import BackButton from '../components/BackButton';
+import { theme } from '../core/theme';
+import { emailValidator, passwordValidator } from '../core/utils';
+import { postMemberLogin } from '../controllers/member';
+import Toast from '../components/Toast';
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState({ value: "", error: "" });
-  const [password, setPassword] = useState({ value: "", error: "" });
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
-  const _onLoginPressed = async () => {
+  const onLoginPressed = async () => {
     if (loading) return;
 
     const emailError = emailValidator(email.value);
@@ -31,10 +33,7 @@ const LoginScreen = ({ navigation }) => {
 
     setLoading(true);
 
-    const response = await loginUser({
-      email: email.value,
-      password: password.value
-    });
+    const response = await postMemberLogin({ email: email.value, password: password.value });
 
     if (response.error) {
       setError(response.error);
@@ -45,17 +44,17 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("HomeScreen")} />
+      <BackButton goBack={() => navigation.navigate('HomeScreen')} />
 
       <Logo />
 
-      <Header>Welcome back.</Header>
+      <Header>Giriş Yap</Header>
 
       <TextInput
         label="Email"
         returnKeyType="next"
         value={email.value}
-        onChangeText={text => setEmail({ value: text, error: "" })}
+        onChangeText={(text) => setEmail({ value: text, error: '' })}
         error={!!email.error}
         errorText={email.error}
         autoCapitalize="none"
@@ -65,10 +64,10 @@ const LoginScreen = ({ navigation }) => {
       />
 
       <TextInput
-        label="Password"
+        label="Şifre"
         returnKeyType="done"
         value={password.value}
-        onChangeText={text => setPassword({ value: text, error: "" })}
+        onChangeText={(text) => setPassword({ value: text, error: '' })}
         error={!!password.error}
         errorText={password.error}
         secureTextEntry
@@ -77,43 +76,43 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.forgotPassword}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("ForgotPasswordScreen")}
+          onPress={() => navigation.navigate('ForgotPasswordScreen')}
         >
-          <Text style={styles.label}>Forgot your password?</Text>
+          <Text style={styles.label}>Şifreni mi unuttun?</Text>
         </TouchableOpacity>
       </View>
 
-      <Button loading={loading} mode="contained" onPress={_onLoginPressed}>
-        Login
+      <Button loading={loading} mode="contained" onPress={onLoginPressed}>
+        Giriş Yap 🤟
       </Button>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
-          <Text style={styles.link}>Sign up</Text>
+        <Text style={styles.label}>Hesabınız yok mu ?  </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
+          <Text style={styles.link}>Hesap oluştur!</Text>
         </TouchableOpacity>
       </View>
 
-      <Toast message={error} onDismiss={() => setError("")} />
+      <Toast message={error} onDismiss={() => setError('')} />
     </Background>
   );
 };
 
 const styles = StyleSheet.create({
   forgotPassword: {
-    width: "100%",
-    alignItems: "flex-end",
+    width: '100%',
+    alignItems: 'flex-end',
     marginBottom: 24
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 4
   },
   label: {
     color: theme.colors.secondary
   },
   link: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: theme.colors.primary
   }
 });
