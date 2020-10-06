@@ -1,24 +1,25 @@
-import React, { memo } from "react";
-import { ActivityIndicator } from "react-native";
-import firebase from "firebase/app";
-import "firebase/auth";
-import Background from "../components/Background";
-import { theme } from "../core/theme";
-import { FIREBASE_CONFIG } from "../core/config";
-
-// Initialize Firebase
-firebase.initializeApp(FIREBASE_CONFIG);
+import React, { memo, useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
+import Background from '../components/Background';
+import { theme } from '../core/theme';
+import { getItem } from '../services/deviceStorage';
 
 const AuthLoadingScreen = ({ navigation }) => {
-  firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      // User is logged in
-      navigation.navigate("Dashboard");
-    } else {
-      // User is not logged in
-      navigation.navigate("HomeScreen");
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function loadUserMail() {
+      const user = await getItem({ key: 'user' });
+      if (user) {
+        // User is logged in
+        navigation.navigate('Dashboard');
+      } else {
+        // User is not logged in
+        navigation.navigate('HomeScreen');
+      }
     }
-  });
+    // Execute the created function directly
+    loadUserMail();
+  }, []);
 
   return (
     <Background>

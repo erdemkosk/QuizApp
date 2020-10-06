@@ -7,9 +7,9 @@ const postMemberLogin = async ({ email, password }) => {
       email,
       password,
     };
-    const resp = await axios.post(API_URLS.LOGIN, data);
-    console.log(resp.data);
-    return {};
+    const response = await axios.post(API_URLS.LOGIN, data);
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     switch (error.response.data.code) {
       case ERROR_CODES.NOT_FOUND:
@@ -31,9 +31,9 @@ const postMemberRegister = async ({ email, password, nameSurname }) => {
       password,
       nameSurname,
     };
-    const resp = await axios.post(API_URLS.REGISTER, data);
-    console.log(resp.data);
-    return {};
+    const response = await axios.post(API_URLS.REGISTER, data);
+    console.log(response.data);
+    return response;
   } catch (error) {
     switch (error.response.data.code) {
       case ERROR_CODES.NOT_FOUND:

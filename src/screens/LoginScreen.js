@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import {
   TouchableOpacity, StyleSheet, Text, View
 } from 'react-native';
@@ -11,6 +11,7 @@ import BackButton from '../components/BackButton';
 import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
 import { postMemberLogin } from '../controllers/member';
+import { saveItem, getItem } from '../services/deviceStorage';
 import Toast from '../components/Toast';
 
 const LoginScreen = ({ navigation }) => {
@@ -18,6 +19,18 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    async function loadUserMail() {
+      const userPreviosLoginInfo = await getItem({ key: 'previous-user-email' });
+      console.log(userPreviosLoginInfo);
+      if (userPreviosLoginInfo) {
+        setEmail({ value: userPreviosLoginInfo });
+      }
+    }
+    // Execute the created function directly
+    loadUserMail();
+  }, []);
 
   const onLoginPressed = async () => {
     if (loading) return;
@@ -39,7 +52,32 @@ const LoginScreen = ({ navigation }) => {
       setError(response.error);
     }
 
+    await saveItem({
+      key: 'user',
+      value: JSON.stringify({
+        createdAt: response.data.member.createdAt,
+        email: response.data.member.email,
+        nameSurname: response.data.member.nameSurname,
+        token: response.data.token,
+      })
+    });
+
+    await Promise.all([saveItem({
+      key: 'user',
+      value: JSON.stringify({
+        createdAt: response.data.member.createdAt,
+        email: response.data.member.email,
+        nameSurname: response.data.member.nameSurname,
+        token: response.data.token,
+      })
+    }), await saveItem({
+      key: 'previous-user-email',
+      value: response.data.member.email,
+    })]);
+
     setLoading(false);
+
+    navigation.navigate('Dashboard');
   };
 
   return (
