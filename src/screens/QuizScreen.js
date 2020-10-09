@@ -98,32 +98,32 @@ export default class QuizScreen extends Component {
   };
 
    buttonClickHandle = async (buttonNumber) => {
-     const stateName = `button${buttonNumber}clicked`;
+       //Avoid to generate new state check until reset
+     if (!this.state.button1clicked
+        && !this.state.button2clicked
+        && !this.state.button3clicked
+        && !this.state.button4clicked) {
+       const stateName = `button${buttonNumber}clicked`;
 
-     this.setState({
-       // eslint-disable-next-line react/no-access-state-in-setstate
-       [stateName]: !this.state[stateName],
-       isWaiting: true,
-     });
-
-     this.setState({
-       // eslint-disable-next-line react/no-access-state-in-setstate
-       [stateName]: !this.state[stateName],
-       isWaiting: true,
-       isAnsweredSuccesfull: this.state.rightAnswer === buttonNumber - 1
-     });
-
-     setTimeout(() => {
        this.setState({
-         isWaiting: false,
-         isAnyButtonPressed: true,
+         // eslint-disable-next-line react/no-access-state-in-setstate
+         [stateName]: true,
+         isWaiting: true,
+         isAnsweredSuccesfull: this.state.rightAnswer === buttonNumber - 1,
        });
-     }, 1000);
 
-     setTimeout(() => {
-       this.fetchQuestion();
-       this.resetStates();
-     }, 2000);
+       setTimeout(() => {
+         this.setState({
+           isWaiting: false,
+           isAnyButtonPressed: true,
+         });
+       }, 1000);
+
+       setTimeout(() => {
+         this.fetchQuestion();
+         this.resetStates();
+       }, 2000);
+     }
    };
 
    resetStates = async () => {
