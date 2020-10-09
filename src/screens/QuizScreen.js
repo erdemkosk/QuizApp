@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable global-require */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
@@ -24,10 +25,11 @@ export default class QuizScreen extends Component {
       rightAnswer: -1,
       isWaiting: false,
       isAnyButtonPressed: false,
+      isAnsweredSuccesfull: false,
     };
   }
 
-   generateColor = (number) => {
+   generateColorForButtons = (number) => {
      const selected = 'blue';
      const success = 'green';
      const wrong = 'red';
@@ -53,6 +55,22 @@ export default class QuizScreen extends Component {
      }
 
      return notPressed;
+   };
+
+   generateColorForHeader = () => {
+     const success = 'green';
+     const wrong = 'red';
+     const defaultColor = '#343A40';
+
+     if (!this.state.isAnyButtonPressed) {
+       return defaultColor;
+     }
+
+     if (this.state.isAnsweredSuccesfull) {
+       return success;
+     }
+
+     return wrong;
    };
 
   componentDidMount = () => {
@@ -88,6 +106,13 @@ export default class QuizScreen extends Component {
        isWaiting: true,
      });
 
+     this.setState({
+       // eslint-disable-next-line react/no-access-state-in-setstate
+       [stateName]: !this.state[stateName],
+       isWaiting: true,
+       isAnsweredSuccesfull: this.state.rightAnswer === buttonNumber - 1
+     });
+
      setTimeout(() => {
        this.setState({
          isWaiting: false,
@@ -110,6 +135,7 @@ export default class QuizScreen extends Component {
        button4clicked: false,
        rightAnswer: -1,
        isAnyButtonPressed: false,
+       isAnsweredSuccesfull: false,
      });
    };
 
@@ -135,8 +161,8 @@ export default class QuizScreen extends Component {
            </Header>
            <Content padder contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
              <Card>
-               <CardItem style={{ backgroundColor: '#343A40' }}>
-                 <CardItem style={{ backgroundColor: '#343A40' }}>
+               <CardItem style={{ backgroundColor: this.generateColorForHeader() }}>
+                 <CardItem style={{ backgroundColor: this.generateColorForHeader() }}>
                    <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 22 }}>
                      {this.state.questionText}
                      ?
@@ -170,7 +196,7 @@ export default class QuizScreen extends Component {
                      style={{
                        marginTop: 20,
                        backgroundColor:
-                       this.generateColor(1)
+                       this.generateColorForButtons(1)
                      }}
                      onPress={() => {
                        this.buttonClickHandle(1);
@@ -180,7 +206,7 @@ export default class QuizScreen extends Component {
                    </Button>
                    <Button
                      full
-                     style={{ marginTop: 20, backgroundColor: this.generateColor(2) }}
+                     style={{ marginTop: 20, backgroundColor: this.generateColorForButtons(2) }}
                      onPress={() => {
                        this.buttonClickHandle(2);
                      }}
@@ -189,7 +215,7 @@ export default class QuizScreen extends Component {
                    </Button>
                    <Button
                      full
-                     style={{ marginTop: 20, backgroundColor: this.generateColor(3) }}
+                     style={{ marginTop: 20, backgroundColor: this.generateColorForButtons(3) }}
                      onPress={() => {
                        this.buttonClickHandle(3);
                      }}
@@ -198,7 +224,7 @@ export default class QuizScreen extends Component {
                    </Button>
                    <Button
                      full
-                     style={{ marginTop: 20, backgroundColor: this.generateColor(4) }}
+                     style={{ marginTop: 20, backgroundColor: this.generateColorForButtons(4) }}
                      onPress={() => {
                        this.buttonClickHandle(4);
                      }}
