@@ -50,6 +50,8 @@ const LoginScreen = ({ navigation }) => {
 
     if (response.error) {
       setError(response.error);
+      setLoading(false);
+      return;
     }
 
     await saveItem({
