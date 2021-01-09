@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export const logoutUser = () => {
   firebase.auth().signOut();
@@ -15,25 +15,25 @@ export const signInUser = async ({ name, email, password }) => {
     return {};
   } catch (error) {
     switch (error.code) {
-      case "auth/email-already-in-use":
+      case 'auth/email-already-in-use':
         return {
-          error: "E-mail already in use."
+          error: 'E-mail already in use.'
         };
-      case "auth/invalid-email":
+      case 'auth/invalid-email':
         return {
-          error: "Invalid e-mail address format."
+          error: 'Invalid e-mail address format.'
         };
-      case "auth/weak-password":
+      case 'auth/weak-password':
         return {
-          error: "Password is too weak."
+          error: 'Password is too weak.'
         };
-      case "auth/too-many-requests":
+      case 'auth/too-many-requests':
         return {
-          error: "Too many request. Try again in a minute."
+          error: 'Too many request. Try again in a minute.'
         };
       default:
         return {
-          error: "Check your internet connection."
+          error: 'Check your internet connection.'
         };
     }
   }
@@ -45,48 +45,48 @@ export const loginUser = async ({ email, password }) => {
     return {};
   } catch (error) {
     switch (error.code) {
-      case "auth/invalid-email":
+      case 'auth/invalid-email':
         return {
-          error: "Invalid email address format."
+          error: 'Invalid email address format.'
         };
-      case "auth/user-not-found":
-      case "auth/wrong-password":
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
         return {
-          error: "Invalid email address or password."
+          error: 'Invalid email address or password.'
         };
-      case "auth/too-many-requests":
+      case 'auth/too-many-requests':
         return {
-          error: "Too many request. Try again in a minute."
+          error: 'Too many request. Try again in a minute.'
         };
       default:
         return {
-          error: "Check your internet connection."
+          error: 'Check your internet connection.'
         };
     }
   }
 };
 
-export const sendEmailWithPassword = async email => {
+export const sendEmailWithPassword = async (email) => {
   try {
     await firebase.auth().sendPasswordResetEmail(email);
     return {};
   } catch (error) {
     switch (error.code) {
-      case "auth/invalid-email":
+      case 'auth/invalid-email':
         return {
-          error: "Invalid email address format."
+          error: 'Invalid email address format.'
         };
-      case "auth/user-not-found":
+      case 'auth/user-not-found':
         return {
-          error: "User with this email does not exist."
+          error: 'User with this email does not exist.'
         };
-      case "auth/too-many-requests":
+      case 'auth/too-many-requests':
         return {
-          error: "Too many request. Try again in a minute."
+          error: 'Too many request. Try again in a minute.'
         };
       default:
         return {
-          error: "Check your internet connection."
+          error: 'Check your internet connection.'
         };
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable import/named */
 /* eslint-disable global-require */
 /* eslint-disable react/destructuring-assignment */
@@ -6,7 +7,8 @@ import { StyleSheet, ImageBackground } from 'react-native';
 import {
   Container, Body, Title, Left, Badge, Button, Header, Content, Card, CardItem, Text, Icon, Right
 } from 'native-base';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { ProgressBar, Colors } from 'react-native-paper';
+import CountDown from 'react-native-countdown-component';
 import { getQuestion } from '../controllers/question';
 
 export default class QuizScreen extends Component {
@@ -26,7 +28,23 @@ export default class QuizScreen extends Component {
       isWaiting: false,
       isAnyButtonPressed: false,
       isAnsweredSuccesfull: false,
+      successfullCount: 0,
+      failedCount: 0,
+      time: 5,
+      questionCountPerLevel: 5,
+      answerSum: 0,
+      userDifficultyLevel: 1,
     };
+  }
+
+  resetGame = () => {
+    this.setState({
+      answerSum: 0,
+      userDifficultyLevel: 1,
+      successfullCount: 0,
+      failedCount: 0,
+      time: 4,
+    });
   }
 
    generateColorForButtons = (number) => {
@@ -73,50 +91,87 @@ export default class QuizScreen extends Component {
      return wrong;
    };
 
+   generateColorForTimer = () => {
+     const success = 'green';
+     const warning = 'red';
+     const defaultColor = '#343A40';
+
+     if (this.state.time < 3) {
+       return warning;
+     }
+
+     if (this.state.isAnsweredSuccesfull && !this.state.isWaiting) {
+       return success;
+     }
+
+     return defaultColor;
+   };
+
   componentDidMount = () => {
+    this.interval = setInterval(() => {
+      if (this.state.time <= 0) {
+        this.resetGame();
+      }
+      this.setState((prevState) => ({ time: prevState.time - 1 }));
+    }, 1000);
+
     (async () => {
       await this.fetchQuestion();
     })();
   }
 
   fetchQuestion = async () => {
-    const response = await getQuestion({ difficulty: 1 });
+    const response = await getQuestion({ difficulty: this.state.userDifficultyLevel });
 
     this.setState({
       // eslint-disable-next-line react/no-access-state-in-setstate
-      questionText: response.data.question,
-      rightAnswer: response.data.answer
+      questionText: response.results.question,
+      rightAnswer: response.results.correctAnswer
     });
 
-    for (let index = 0; index < response.data.answers.length; index += 1) {
+    for (let index = 0; index < response.results.answers.length; index += 1) {
       const stateName = `button${index + 1}text`;
       this.setState({
       // eslint-disable-next-line react/no-access-state-in-setstate
-        [stateName]: response.data.answers[index].trim()
+        [stateName]: response.results.answers[index].trim()
       });
     }
   };
 
    buttonClickHandle = async (buttonNumber) => {
-       //Avoid to generate new state check until reset
+     // Avoid to generate new state check until reset
      if (!this.state.button1clicked
         && !this.state.button2clicked
         && !this.state.button3clicked
         && !this.state.button4clicked) {
        const stateName = `button${buttonNumber}clicked`;
 
-       this.setState({
-         // eslint-disable-next-line react/no-access-state-in-setstate
+       this.setState((prevState) => ({
          [stateName]: true,
          isWaiting: true,
-         isAnsweredSuccesfull: this.state.rightAnswer === buttonNumber - 1,
-       });
+         isAnsweredSuccesfull: prevState.rightAnswer === buttonNumber - 1
+       }));
+
+       const userDifficultyLevel = (this.state.answerSum / this.state.questionCountPerLevel === 1 && this.state.userDifficultyLevel < 6) ? this.state.userDifficultyLevel + 1 : this.state.userDifficultyLevel;
+       const answerSum = 0;
+
+       if (userDifficultyLevel !== this.state.userDifficultyLevel) {
+         this.setState({
+           answerSum,
+         });
+       }
 
        setTimeout(() => {
-         this.setState({
+         this.setState((prevState) => ({
+           time: prevState.rightAnswer === buttonNumber - 1 ? prevState.time + 10 : prevState.time,
            isWaiting: false,
            isAnyButtonPressed: true,
-         });
+           successfullCount: prevState.isAnsweredSuccesfull ? prevState.successfullCount + 1 : prevState.successfullCount,
+           failedCount: !prevState.isAnsweredSuccesfull ? prevState.failedCount + 1 : prevState.failedCount,
+           // eslint-disable-next-line no-nested-ternary
+           answerSum: prevState.isAnsweredSuccesfull ? prevState.answerSum + 1 : prevState.answerSum > 0 ? prevState.answerSum - 1 : prevState.answerSum,
+           userDifficultyLevel,
+         }));
        }, 1000);
 
        setTimeout(() => {
@@ -142,8 +197,7 @@ export default class QuizScreen extends Component {
    render() {
      return (
        <Container>
-         <ImageBackground resizeMode="cover" source={require('../../assets/background_dot.png')} style={{ height: '100%' }}>
-
+         <ImageBackground resizeMode="cover" source={require('../../assets/crop.png')} style={{ height: '100%' }}>
            <Header>
              <Left>
                <Button transparent>
@@ -151,7 +205,7 @@ export default class QuizScreen extends Component {
                </Button>
              </Left>
              <Body>
-               <Title>Header</Title>
+               <Title>Quiz It</Title>
              </Body>
              <Right>
                <Button transparent>
@@ -159,7 +213,20 @@ export default class QuizScreen extends Component {
                </Button>
              </Right>
            </Header>
+
            <Content padder contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
+             <CountDown
+               style={{ margin: 15 }}
+               until={this.state.time}
+               size={30}
+               digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: this.generateColorForTimer() }}
+               digitTxtStyle={{ color: this.generateColorForTimer() }}
+               timeToShow={['M', 'S']}
+               timeLabels={{ m: 'Dakika', s: 'Saniye' }}
+               running={!this.state.isWaiting}
+             />
+             <ProgressBar progress={(this.state.answerSum) / this.state.questionCountPerLevel} color={this.generateColorForHeader()} />
+
              <Card>
                <CardItem style={{ backgroundColor: this.generateColorForHeader() }}>
                  <CardItem style={{ backgroundColor: this.generateColorForHeader() }}>
@@ -172,17 +239,17 @@ export default class QuizScreen extends Component {
                      <Button style={{ backgroundColor: '#6C757D' }}>
                        <Badge primary style={{ backgroundColor: '#6C757D' }}>
                          <Text style={{ fontWeight: 'bold' }}>
-                           S
+                           T
                          </Text>
-                         <Text style={{ backgroundColor: '#FFFFFF' }}>2</Text>
+                         <Text>{this.state.successfullCount + this.state.failedCount}</Text>
                        </Badge>
                        <Badge primary style={{ backgroundColor: '#6C757D' }}>
                          <Text style={{ fontWeight: 'bold' }}>D</Text>
-                         <Text>1</Text>
+                         <Text>{this.state.successfullCount}</Text>
                        </Badge>
                        <Badge primary style={{ backgroundColor: '#6C757D' }}>
                          <Text style={{ fontWeight: 'bold' }}>Y</Text>
-                         <Text>1</Text>
+                         <Text>{this.state.failedCount}</Text>
                        </Badge>
                      </Button>
                    </Right>

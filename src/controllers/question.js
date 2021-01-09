@@ -3,11 +3,7 @@ import { API_URLS, ERROR_CODES } from '../core/constraint';
 
 const getQuestion = async ({ difficulty }) => {
   try {
-    const params = {
-      difficulty
-    };
-    const response = await axios.get(API_URLS.QUESTION, params);
-   // console.log(response.data);
+    const response = await axios.get(`${API_URLS.QUESTION}/?difficulty=${difficulty}`);
     return response.data;
   } catch (error) {
     switch (error.response.data.code) {
