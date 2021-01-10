@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 /* eslint-disable max-len */
 /* eslint-disable import/named */
 /* eslint-disable global-require */
@@ -7,7 +8,7 @@ import {
   StyleSheet, ImageBackground, Animated, Image
 } from 'react-native';
 import {
-  Container, Body, Title, Left, Badge, Button, Header, Content, Card, CardItem, Text, Icon, Right
+  Container, Body, Title, Left, Badge, Button, Header, Content, Card, CardItem, Text, Icon, Right, Thumbnail
 } from 'native-base';
 import Modal from 'react-native-modal';
 import { ProgressBar, Colors } from 'react-native-paper';
@@ -35,22 +36,24 @@ export default class QuizScreen extends Component {
       isAnsweredSuccesfull: false,
       successfullCount: 0,
       failedCount: 0,
-      time: 8,
+      time: 0,
       questionCountPerLevel: 5,
       answerSum: 0,
       userDifficultyLevel: 1,
-      isVisible: true,
+      isVisibleStartingModel: true,
+      isVisibleSFailedModel: false,
     };
   }
 
   resetGame = () => {
+    clearInterval(this.interval);
     this.setState({
       isVisible: true,
       answerSum: 0,
       userDifficultyLevel: 1,
       successfullCount: 0,
       failedCount: 0,
-      time: 4,
+      isVisibleSFailedModel:true,
     });
   }
 
@@ -140,6 +143,12 @@ export default class QuizScreen extends Component {
    };
 
   componentDidMount = () => {
+    (async () => {
+      await this.fetchQuestion();
+    })();
+  }
+
+  startingModelAction = () => {
     this.interval = setInterval(() => {
       if (this.state.time <= 0) {
         this.resetGame();
@@ -147,14 +156,10 @@ export default class QuizScreen extends Component {
       this.setState((prevState) => ({ time: prevState.time - 1 }));
     }, 1000);
 
-    (async () => {
-      await this.fetchQuestion();
-    })();
-  }
-
-  toggleModel = () => {
     this.setState({
-      isVisible: false,
+      time: 10,
+      isVisibleStartingModel: false,
+      isVisibleSFailedModel:false,
     });
   }
 
@@ -239,21 +244,6 @@ export default class QuizScreen extends Component {
    render() {
      return (
        <Animated.View style={{ transform: [{ translateX: this.shakeAnimation }] }}>
-         <Card>
-           <CardItem header button onPress={() => alert('This is Card Header')}>
-             <Text>NativeBase</Text>
-           </CardItem>
-           <CardItem button onPress={() => alert('This is Card Body')}>
-             <Body>
-               <Text>
-                 Click on any carditem
-               </Text>
-             </Body>
-           </CardItem>
-           <CardItem footer button onPress={() => alert('This is Card Footer')}>
-             <Text>GeekyAnts</Text>
-           </CardItem>
-         </Card>
          <ImageBackground resizeMode="cover" source={require('../../assets/crop.png')} style={{ height: '100%' }}>
            <Header>
              <Left>
@@ -271,31 +261,45 @@ export default class QuizScreen extends Component {
              </Right>
            </Header>
            <Content padder contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
-             <Modal isVisible={this.state.isVisible}>
-
-               <Card>
-                 <CardItem header>
-                   <Text>Hoops🥲</Text>
-                 </CardItem>
+             <Modal isVisible={this.state.isVisibleStartingModel}>
+               <Card style={{ backgroundColor: 'transparent' }}>
                  <CardItem>
-                   <Body>
-
-                     <Image source={{ uri: 'https://i.pinimg.com/474x/06/af/72/06af72600ed2c6c6f676999a611f30ab.jpg' }} style={{ height: 200, width: null, flex: 1 }} />
-
+                   <Body style={{ alignItems: 'center' }}>
+                     <Image source={require('../../assets/logo.png')} style={{ width: 300 }} resizeMode="contain" />
+                     <Text>İngilizce kelime öğrenmenin en kolay yolu 🤙. Boş zamanlarında senin için oluşturulan rastgele ingilizce kelime testlerini cevapla 🙏 Kendini geliştir!</Text>
+                     <Button
+                       style={{ marginTop: 30 }}
+                       full
+                       bordered
+                       onPress={() => {
+                         this.startingModelAction();
+                       }}
+                     >
+                       <Text>Hadi Başlayalım 🤙</Text>
+                     </Button>
                    </Body>
                  </CardItem>
-                 <CardItem footer>
-                   <Button
-                     title="Hide modal"
-                     onPress={() => {
-                       this.toggleModel();
-                     }}
-                   >
-                     <Text>Yeniden Başlat</Text>
-                   </Button>
+               </Card>
+             </Modal>
+             <Modal isVisible={this.state.isVisibleSFailedModel}>
+               <Card style={{ backgroundColor: 'transparent' }}>
+                 <CardItem>
+                   <Body style={{ alignItems: 'center' }}>
+                     <Image source={require('../../assets/logo.png')} style={{ width: 300 }} resizeMode="contain" />
+                     <Text>Kaybettin tekrar oyna</Text>
+                     <Button
+                       style={{ marginTop: 30 }}
+                       full
+                       bordered
+                       onPress={() => {
+                        this.startingModelAction();
+                       }}
+                     >
+                       <Text>Hadi Tekrar Başlayalım 🤙</Text>
+                     </Button>
+                   </Body>
                  </CardItem>
                </Card>
-
              </Modal>
              <CountDown
                style={{ margin: 15 }}
