@@ -3,10 +3,13 @@
 /* eslint-disable global-require */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-import { StyleSheet, ImageBackground } from 'react-native';
+import {
+  StyleSheet, ImageBackground, Animated, Image
+} from 'react-native';
 import {
   Container, Body, Title, Left, Badge, Button, Header, Content, Card, CardItem, Text, Icon, Right
 } from 'native-base';
+import Modal from 'react-native-modal';
 import { ProgressBar, Colors } from 'react-native-paper';
 import CountDown from 'react-native-countdown-component';
 import { getQuestion } from '../controllers/question';
@@ -14,7 +17,9 @@ import { getQuestion } from '../controllers/question';
 export default class QuizScreen extends Component {
   constructor(props) {
     super(props);
+    this.shakeAnimation = new Animated.Value(0);
     this.state = {
+      levelStateColors: ['#1abc9c', '#3498db', '#8e44ad', '#d35400', '#c0392b'],
       button1clicked: false,
       button2clicked: false,
       button3clicked: false,
@@ -30,15 +35,17 @@ export default class QuizScreen extends Component {
       isAnsweredSuccesfull: false,
       successfullCount: 0,
       failedCount: 0,
-      time: 5,
+      time: 8,
       questionCountPerLevel: 5,
       answerSum: 0,
       userDifficultyLevel: 1,
+      isVisible: true,
     };
   }
 
   resetGame = () => {
     this.setState({
+      isVisible: true,
       answerSum: 0,
       userDifficultyLevel: 1,
       successfullCount: 0,
@@ -75,10 +82,35 @@ export default class QuizScreen extends Component {
      return notPressed;
    };
 
+   startShake = () => {
+     Animated.sequence([
+       Animated.timing(this.shakeAnimation, { toValue: 10, duration: 100, useNativeDriver: true }),
+       Animated.timing(this.shakeAnimation, { toValue: -10, duration: 100, useNativeDriver: true }),
+       Animated.timing(this.shakeAnimation, { toValue: 10, duration: 100, useNativeDriver: true }),
+       Animated.timing(this.shakeAnimation, { toValue: 0, duration: 100, useNativeDriver: true })
+     ]).start();
+   }
+
    generateColorForHeader = () => {
      const success = 'green';
      const wrong = 'red';
      const defaultColor = '#343A40';
+
+     if (!this.state.isAnyButtonPressed) {
+       return defaultColor;
+     }
+
+     if (this.state.isAnsweredSuccesfull) {
+       return success;
+     }
+
+     return wrong;
+   };
+
+   generateColorForBar = () => {
+     const success = 'green';
+     const wrong = 'red';
+     const defaultColor = this.state.levelStateColors[this.state.userDifficultyLevel];
 
      if (!this.state.isAnyButtonPressed) {
        return defaultColor;
@@ -118,6 +150,12 @@ export default class QuizScreen extends Component {
     (async () => {
       await this.fetchQuestion();
     })();
+  }
+
+  toggleModel = () => {
+    this.setState({
+      isVisible: false,
+    });
   }
 
   fetchQuestion = async () => {
@@ -162,6 +200,10 @@ export default class QuizScreen extends Component {
        }
 
        setTimeout(() => {
+         if (this.state.isAnsweredSuccesfull === false) {
+           this.startShake();
+         }
+
          this.setState((prevState) => ({
            time: prevState.rightAnswer === buttonNumber - 1 ? prevState.time + 10 : prevState.time,
            isWaiting: false,
@@ -196,7 +238,22 @@ export default class QuizScreen extends Component {
 
    render() {
      return (
-       <Container>
+       <Animated.View style={{ transform: [{ translateX: this.shakeAnimation }] }}>
+         <Card>
+           <CardItem header button onPress={() => alert('This is Card Header')}>
+             <Text>NativeBase</Text>
+           </CardItem>
+           <CardItem button onPress={() => alert('This is Card Body')}>
+             <Body>
+               <Text>
+                 Click on any carditem
+               </Text>
+             </Body>
+           </CardItem>
+           <CardItem footer button onPress={() => alert('This is Card Footer')}>
+             <Text>GeekyAnts</Text>
+           </CardItem>
+         </Card>
          <ImageBackground resizeMode="cover" source={require('../../assets/crop.png')} style={{ height: '100%' }}>
            <Header>
              <Left>
@@ -213,8 +270,33 @@ export default class QuizScreen extends Component {
                </Button>
              </Right>
            </Header>
-
            <Content padder contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
+             <Modal isVisible={this.state.isVisible}>
+
+               <Card>
+                 <CardItem header>
+                   <Text>Hoops🥲</Text>
+                 </CardItem>
+                 <CardItem>
+                   <Body>
+
+                     <Image source={{ uri: 'https://i.pinimg.com/474x/06/af/72/06af72600ed2c6c6f676999a611f30ab.jpg' }} style={{ height: 200, width: null, flex: 1 }} />
+
+                   </Body>
+                 </CardItem>
+                 <CardItem footer>
+                   <Button
+                     title="Hide modal"
+                     onPress={() => {
+                       this.toggleModel();
+                     }}
+                   >
+                     <Text>Yeniden Başlat</Text>
+                   </Button>
+                 </CardItem>
+               </Card>
+
+             </Modal>
              <CountDown
                style={{ margin: 15 }}
                until={this.state.time}
@@ -225,7 +307,26 @@ export default class QuizScreen extends Component {
                timeLabels={{ m: 'Dakika', s: 'Saniye' }}
                running={!this.state.isWaiting}
              />
-             <ProgressBar progress={(this.state.answerSum) / this.state.questionCountPerLevel} color={this.generateColorForHeader()} />
+             <Button
+               full
+               style={{
+                 backgroundColor: '#6C757D',
+               }}
+             >
+               <Badge primary style={{ backgroundColor: '#6C757D' }}>
+                 <Text style={{ fontWeight: 'bold' }}>
+                   Seviye
+                   {' '}
+                   {this.state.userDifficultyLevel}
+                 </Text>
+                 <Text style={{ fontWeight: 'bold', color: this.generateColorForBar() }}>
+                   X
+                   {' '}
+                   {this.state.userDifficultyLevel}
+                 </Text>
+               </Badge>
+             </Button>
+             <ProgressBar progress={(this.state.answerSum) / this.state.questionCountPerLevel} color={this.generateColorForBar()} />
 
              <Card>
                <CardItem style={{ backgroundColor: this.generateColorForHeader() }}>
@@ -304,7 +405,7 @@ export default class QuizScreen extends Component {
              </Card>
            </Content>
          </ImageBackground>
-       </Container>
+       </Animated.View>
 
      );
    }
