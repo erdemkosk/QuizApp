@@ -13,6 +13,7 @@ import {
 import Modal from 'react-native-modal';
 import { ProgressBar, Colors } from 'react-native-paper';
 import CountDown from 'react-native-countdown-component';
+import * as Speech from 'expo-speech';
 import { getQuestion } from '../controllers/question';
 
 export default class QuizScreen extends Component {
@@ -177,6 +178,10 @@ export default class QuizScreen extends Component {
       // eslint-disable-next-line react/no-access-state-in-setstate
       questionText: response.results.question,
       rightAnswer: response.results.correctAnswer
+    });
+
+    Speech.speak(response.results.question, {
+      language: 'en'
     });
 
     for (let index = 0; index < response.results.answers.length; index += 1) {
