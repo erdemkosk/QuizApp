@@ -1,10 +1,8 @@
 import React, { memo, useState, useEffect } from 'react';
 import {
-  TouchableOpacity, StyleSheet, Text, View
+  TouchableOpacity, StyleSheet, Text, View, Image
 } from 'react-native';
 import Background from '../components/Background';
-import Logo from '../components/Logo';
-import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
@@ -23,7 +21,6 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     async function loadUserMail() {
       const userPreviosLoginInfo = await getItem({ key: 'previous-user-email' });
-      console.log(userPreviosLoginInfo);
       if (userPreviosLoginInfo) {
         setEmail({ value: userPreviosLoginInfo });
       }
@@ -57,24 +54,24 @@ const LoginScreen = ({ navigation }) => {
     await saveItem({
       key: 'user',
       value: JSON.stringify({
-        createdAt: response.data.member.createdAt,
-        email: response.data.member.email,
-        nameSurname: response.data.member.nameSurname,
-        token: response.data.token,
+        createdAt: response.member.createdAt,
+        email: response.member.email,
+        nameSurname: response.member.nameSurname,
+        token: response.token,
       })
     });
 
     await Promise.all([saveItem({
       key: 'user',
       value: JSON.stringify({
-        createdAt: response.data.member.createdAt,
-        email: response.data.member.email,
-        nameSurname: response.data.member.nameSurname,
-        token: response.data.token,
+        createdAt: response.member.createdAt,
+        email: response.member.email,
+        nameSurname: response.member.nameSurname,
+        token: response.token,
       })
     }), await saveItem({
       key: 'previous-user-email',
-      value: response.data.member.email,
+      value: response.member.email,
     })]);
 
     setLoading(false);
@@ -86,9 +83,7 @@ const LoginScreen = ({ navigation }) => {
     <Background>
       <BackButton goBack={() => navigation.navigate('HomeScreen')} />
 
-      <Logo />
-
-      <Header>Giriş Yap</Header>
+      <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
 
       <TextInput
         label="Email"

@@ -22,7 +22,7 @@ const Router = createStackNavigator(
     QuizScreen
   },
   {
-    initialRouteName: 'QuizScreen',
+    initialRouteName: 'AuthLoadingScreen',
     headerMode: 'none'
   }
 );

@@ -21,6 +21,8 @@ export default class QuizScreen extends Component {
     this.shakeAnimation = new Animated.Value(0);
     this.state = {
       levelStateColors: ['#1abc9c', '#3498db', '#8e44ad', '#d35400', '#c0392b'],
+      starModelButonsText: ['Hadi Başlayalım 🤙', 'Tekrar Hoşgeldin 🤩', 'İngilizce Öğrenme Vakti 🔥', 'Hadi biraz antreman 😋', 'Gönderin Gelsin 😬'],
+      failedButonsText: ['Hadi Tekrar Başlayalım 🤙', 'Daha bu başlangıç 🤩', 'Kol Bozuktu 🔥', 'Hızlanmak şart 😋', 'Bir daha deneyeyim 😬'],
       button1clicked: false,
       button2clicked: false,
       button3clicked: false,
@@ -37,12 +39,17 @@ export default class QuizScreen extends Component {
       successfullCount: 0,
       failedCount: 0,
       time: 0,
-      questionCountPerLevel: 5,
+      questionCountPerLevel: 4,
       answerSum: 0,
       userDifficultyLevel: 1,
+      userDifficultyState: 1,
       isVisibleStartingModel: true,
       isVisibleSFailedModel: false,
     };
+  }
+
+  returnToDashboard = () => {
+    this.props.navigation.navigate('Dashboard');
   }
 
   resetGame = () => {
@@ -53,14 +60,14 @@ export default class QuizScreen extends Component {
       userDifficultyLevel: 1,
       successfullCount: 0,
       failedCount: 0,
-      isVisibleSFailedModel:true,
+      isVisibleSFailedModel: true,
     });
   }
 
    generateColorForButtons = (number) => {
-     const selected = 'blue';
-     const success = 'green';
-     const wrong = 'red';
+     const selected = '#1266F1';
+     const success = '#00B74A';
+     const wrong = '#F93154';
      const notPressed = '#6C757D';
 
      const clickState = `button${number}clicked`;
@@ -95,8 +102,8 @@ export default class QuizScreen extends Component {
    }
 
    generateColorForHeader = () => {
-     const success = 'green';
-     const wrong = 'red';
+     const success = '#00B74A';
+     const wrong = '#F93154';
      const defaultColor = '#343A40';
 
      if (!this.state.isAnyButtonPressed) {
@@ -111,8 +118,8 @@ export default class QuizScreen extends Component {
    };
 
    generateColorForBar = () => {
-     const success = 'green';
-     const wrong = 'red';
+     const success = '#00B74A';
+     const wrong = '#F93154';
      const defaultColor = this.state.levelStateColors[this.state.userDifficultyLevel];
 
      if (!this.state.isAnyButtonPressed) {
@@ -127,8 +134,8 @@ export default class QuizScreen extends Component {
    };
 
    generateColorForTimer = () => {
-     const success = 'green';
-     const warning = 'red';
+     const success = '#00B74A';
+     const warning = '#F93154';
      const defaultColor = '#343A40';
 
      if (this.state.time < 3) {
@@ -159,7 +166,7 @@ export default class QuizScreen extends Component {
     this.setState({
       time: 10,
       isVisibleStartingModel: false,
-      isVisibleSFailedModel:false,
+      isVisibleSFailedModel: false,
     });
   }
 
@@ -196,6 +203,7 @@ export default class QuizScreen extends Component {
        }));
 
        const userDifficultyLevel = (this.state.answerSum / this.state.questionCountPerLevel === 1 && this.state.userDifficultyLevel < 6) ? this.state.userDifficultyLevel + 1 : this.state.userDifficultyLevel;
+       const userDifficultyState = this.state.answerSum / this.state.questionCountPerLevel === 1 ? this.stateuserDifficultyLevel + 1 : userDifficultyLevel;
        const answerSum = 0;
 
        if (userDifficultyLevel !== this.state.userDifficultyLevel) {
@@ -210,7 +218,7 @@ export default class QuizScreen extends Component {
          }
 
          this.setState((prevState) => ({
-           time: prevState.rightAnswer === buttonNumber - 1 ? prevState.time + 10 : prevState.time,
+           time: prevState.rightAnswer === buttonNumber - 1 ? prevState.time + 5 : prevState.time,
            isWaiting: false,
            isAnyButtonPressed: true,
            successfullCount: prevState.isAnsweredSuccesfull ? prevState.successfullCount + 1 : prevState.successfullCount,
@@ -218,6 +226,7 @@ export default class QuizScreen extends Component {
            // eslint-disable-next-line no-nested-ternary
            answerSum: prevState.isAnsweredSuccesfull ? prevState.answerSum + 1 : prevState.answerSum > 0 ? prevState.answerSum - 1 : prevState.answerSum,
            userDifficultyLevel,
+           userDifficultyState,
          }));
        }, 1000);
 
@@ -247,12 +256,12 @@ export default class QuizScreen extends Component {
          <ImageBackground resizeMode="cover" source={require('../../assets/crop.png')} style={{ height: '100%' }}>
            <Header>
              <Left>
-               <Button transparent>
+               <Button onPress={() => this.returnToDashboard()} transparent>
                  <Icon name="arrow-back" />
                </Button>
              </Left>
              <Body>
-               <Title>Quiz It</Title>
+               <Image source={require('../../assets/logo.png')} style={{ width: 150 }} resizeMode="contain" />
              </Body>
              <Right>
                <Button transparent>
@@ -275,7 +284,7 @@ export default class QuizScreen extends Component {
                          this.startingModelAction();
                        }}
                      >
-                       <Text>Hadi Başlayalım 🤙</Text>
+                       <Text>{this.state.starModelButonsText[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
                      </Button>
                    </Body>
                  </CardItem>
@@ -292,10 +301,10 @@ export default class QuizScreen extends Component {
                        full
                        bordered
                        onPress={() => {
-                        this.startingModelAction();
+                         this.startingModelAction();
                        }}
                      >
-                       <Text>Hadi Tekrar Başlayalım 🤙</Text>
+                       <Text>{this.state.failedButonsText[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
                      </Button>
                    </Body>
                  </CardItem>
@@ -326,7 +335,7 @@ export default class QuizScreen extends Component {
                  <Text style={{ fontWeight: 'bold', color: this.generateColorForBar() }}>
                    X
                    {' '}
-                   {this.state.userDifficultyLevel}
+                   {this.state.userDifficultyState}
                  </Text>
                </Badge>
              </Button>

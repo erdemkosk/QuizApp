@@ -3,15 +3,17 @@ import { API_URLS, ERROR_CODES } from '../core/constraint';
 
 const postMemberLogin = async ({ email, password }) => {
   try {
-    const data = {
+   
+
+    const response = await axios.post(API_URLS.LOGIN, {
       email,
       password,
-    };
-    const response = await axios.post(API_URLS.LOGIN, data);
-    console.log(response.data);
-    return response.data;
+    });
+    
+    return response.data.results;
   } catch (error) {
-    switch (error.response.data.code) {
+ 
+    switch (error.response.status) {
       case ERROR_CODES.NOT_FOUND:
         return {
           error: 'Böyle bir kullanıcı bilgisi bulamadık.'

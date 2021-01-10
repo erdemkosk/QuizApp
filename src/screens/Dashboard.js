@@ -1,10 +1,15 @@
-import React, { memo } from 'react';
+/* eslint-disable global-require */
+import React, { memo, useEffect } from 'react';
+import {
+  TouchableOpacity, StyleSheet, Text, View, Image
+} from 'react-native';
+
+import { Container, Thumbnail } from 'native-base';
+import UserAvatar from 'react-native-user-avatar';
 import Background from '../components/Background';
-import Logo from '../components/Logo';
-import Header from '../components/Header';
 import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
-import { removeItem } from '../services/deviceStorage';
+import { removeItem, getItem } from '../services/deviceStorage';
 
 const logoutUser = async ({ navigation }) => {
   await removeItem({
@@ -14,18 +19,45 @@ const logoutUser = async ({ navigation }) => {
   navigation.navigate('LoginScreen');
 };
 
-const Dashboard = ({ navigation }) => (
-  <Background>
-    <Logo />
-    <Header>Let’s start</Header>
-    <Paragraph>
-      Your amazing app starts here. Open you favourite code editor and start
-      editing this project.
-    </Paragraph>
-    <Button mode="outlined" onPress={() => logoutUser({navigation})}>
-      Logout
-    </Button>
-  </Background>
-);
+const moveQuizSecreen = async ({ navigation }) => {
+  navigation.navigate('QuizScreen');
+};
+
+const Dashboard = ({ navigation }) => {
+  const [member, setMember] = React.useState(0);
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function loadUser() {
+      const value = await getItem({ key: 'user' });
+      const response = JSON.parse(value);
+      setMember(response);
+    }
+    // Execute the created function directly
+    loadUser();
+  }, []);
+
+  return (
+    <Container>
+      <Background>
+        <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
+
+        { member.nameSurname
+   && <UserAvatar size={100} name={member.nameSurname} bgColor="#1266F1" />}
+        <Paragraph>
+          {member.nameSurname}
+        </Paragraph>
+        <Paragraph>
+          {member.email}
+        </Paragraph>
+        <Button mode="outlined" onPress={() => moveQuizSecreen({ navigation })}>
+          Oyuna Başla
+        </Button>
+        <Button mode="outlined" onPress={() => logoutUser({ navigation })}>
+          Çıkış Yap
+        </Button>
+      </Background>
+    </Container>
+  );
+};
 
 export default memo(Dashboard);

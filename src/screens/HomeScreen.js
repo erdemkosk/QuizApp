@@ -1,30 +1,33 @@
 import React, { memo } from 'react';
-import Background from '../components/Background';
-import Logo from '../components/Logo';
-import Header from '../components/Header';
+import {
+  Image
+} from 'react-native';
 import Button from '../components/Button';
+import {
+  Container, Body, Title, Left, Badge, Header, Content, Card, CardItem, Text, Icon, Right, Thumbnail
+} from 'native-base';
+import Background from '../components/Background';
+
 import Paragraph from '../components/Paragraph';
-import BottomNavigator from '../components/BottomNavigator';
 
 const HomeScreen = ({ navigation }) => (
-  <Background>
-    <Logo />
-    <Header>Firebase Login</Header>
 
-    <Paragraph>
-      This template supports Firebase authorization out of the box.
-    </Paragraph>
-    <Button mode="contained" onPress={() => navigation.navigate('LoginScreen')}>
-      Login
-    </Button>
-    <Button
-      mode="outlined"
-      onPress={() => navigation.navigate('RegisterScreen')}
-    >
-      Sign Up
-    </Button>
-    <BottomNavigator />
-  </Background>
+  <Container>
+    <Background>
+      <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
+
+      <Paragraph>
+        Hoşgeldin
+      </Paragraph>
+
+      <Button mode="outlined" onPress={() => navigation.navigate('LoginScreen')}>
+        <Text>Giriş Yap</Text>
+      </Button>
+      <Button mode="outlined" onPress={() => navigation.navigate('RegisterScreen')}>
+        <Text>Üye Ol</Text>
+      </Button>
+    </Background>
+  </Container>
 );
 
 export default memo(HomeScreen);
