@@ -8,7 +8,7 @@ export const emailValidator = (email) => {
 };
 
 export const passwordValidator = (password) => {
-  if (!password || password.length <= 0) return 'Şifre alanı boş olamaz😧.';
+  if (!password || password.length < 8 || password.length > 16) return 'Şifre en az 8 en fazla 16 karakterden olusmalidir😧.';
 
   return '';
 };

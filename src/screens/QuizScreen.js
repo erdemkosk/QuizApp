@@ -39,7 +39,7 @@ export default class QuizScreen extends Component {
       isAnsweredSuccesfull: false,
       successfullCount: 0,
       failedCount: 0,
-      time: 0,
+      time: 10,
       questionCountPerLevel: 4,
       answerSum: 0,
       userDifficultyLevel: 1,
@@ -53,7 +53,7 @@ export default class QuizScreen extends Component {
     this.props.navigation.navigate('Dashboard');
   }
 
-  resetGame = () => {
+  gameOver = () => {
     clearInterval(this.interval);
     this.setState({
       isVisible: true,
@@ -156,16 +156,21 @@ export default class QuizScreen extends Component {
     })();
   }
 
-  startingModelAction = () => {
-    this.interval = setInterval(() => {
-      if (this.state.time <= 0) {
-        this.resetGame();
-      }
-      this.setState((prevState) => ({ time: prevState.time - 1 }));
-    }, 1000);
-
+  replayGame = () => {
     this.setState({
       time: 10,
+      isVisibleStartingModel: false,
+      isVisibleSFailedModel: false,
+    });
+  };
+
+  decreaseTime = () => {
+    this.setState((prevState) => ({ time: prevState.time - 1 }));
+  };
+
+  startingModelAction = () => {
+
+    this.setState({
       isVisibleStartingModel: false,
       isVisibleSFailedModel: false,
     });
@@ -285,9 +290,7 @@ export default class QuizScreen extends Component {
                        style={{ marginTop: 30 }}
                        full
                        bordered
-                       onPress={() => {
-                         this.startingModelAction();
-                       }}
+                       onPress={this.startingModelAction}
                      >
                        <Text>{this.state.starModelButonsText[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
                      </Button>
@@ -305,9 +308,7 @@ export default class QuizScreen extends Component {
                        style={{ marginTop: 30 }}
                        full
                        bordered
-                       onPress={() => {
-                         this.startingModelAction();
-                       }}
+                       onPress={this.startingModelAction}
                      >
                        <Text>{this.state.failedButonsText[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
                      </Button>
@@ -318,6 +319,8 @@ export default class QuizScreen extends Component {
              <CountDown
                style={{ margin: 15 }}
                until={this.state.time}
+               onFinish={this.gameOver}
+               onChange={this.decreaseTime}
                size={30}
                digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: this.generateColorForTimer() }}
                digitTxtStyle={{ color: this.generateColorForTimer() }}
