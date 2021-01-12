@@ -4,6 +4,7 @@ const API_URLS = {
   LOGIN: `${baseUrl}member/login/`,
   REGISTER: `${baseUrl}member/register/`,
   QUESTION: `${baseUrl}question`,
+  FILL_IN_BLANKS: `${baseUrl}question/fill-in-blanks`,
 };
 
 const ERROR_CODES = {

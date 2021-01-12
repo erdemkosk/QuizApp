@@ -20,7 +20,11 @@ const logoutUser = async ({ navigation }) => {
 };
 
 const moveQuizSecreen = async ({ navigation }) => {
-  navigation.navigate('QuizScreen');
+  navigation.navigate('QuizScreen', { type: 1 });
+};
+
+const moveBlankInFillsScreen = async ({ navigation }) => {
+  navigation.navigate('QuizScreen', { type: 2 });
 };
 
 const Dashboard = ({ navigation }) => {
@@ -51,6 +55,9 @@ const Dashboard = ({ navigation }) => {
         </Paragraph>
         <Button mode="outlined" onPress={() => moveQuizSecreen({ navigation })}>
           Oyuna Başla
+        </Button>
+        <Button mode="outlined" onPress={() => moveBlankInFillsScreen({ navigation })}>
+          Boşluk Doldurma
         </Button>
         <Button mode="outlined" onPress={() => logoutUser({ navigation })}>
           Çıkış Yap

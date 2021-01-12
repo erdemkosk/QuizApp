@@ -14,12 +14,14 @@ import Modal from 'react-native-modal';
 import { ProgressBar, Colors } from 'react-native-paper';
 import CountDown from 'react-native-countdown-component';
 import * as Speech from 'expo-speech';
-import { getQuestion } from '../controllers/question';
+import { getQuestion, getFillInBlanks } from '../controllers/question';
 
 export default class QuizScreen extends Component {
   constructor(props) {
     super(props);
+  
     this.shakeAnimation = new Animated.Value(0);
+
     this.state = {
       levelStateColors: ['#1abc9c', '#3498db', '#8e44ad', '#d35400', '#c0392b'],
       starModelButonsText: ['Hadi Başlayalım 🤙', 'Tekrar Hoşgeldin 🤩', 'İngilizce Öğrenme Vakti 🔥', 'Hadi biraz antreman 😋', 'Gönderin Gelsin 😬'],
@@ -172,7 +174,17 @@ export default class QuizScreen extends Component {
   }
 
   fetchQuestion = async () => {
-    const response = await getQuestion({ difficulty: this.state.userDifficultyLevel });
+    let response;
+
+    const { params } = this.props.navigation.state;
+
+    if (params.type === 1) {
+      response = await getQuestion({ difficulty: this.state.userDifficultyLevel });
+    } else {
+      response = await getFillInBlanks({ difficulty: this.state.userDifficultyLevel });
+    }
+
+    console.log(JSON.stringify(response));
 
     this.setState({
       // eslint-disable-next-line react/no-access-state-in-setstate

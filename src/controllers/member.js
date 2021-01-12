@@ -3,16 +3,13 @@ import { API_URLS, ERROR_CODES } from '../core/constraint';
 
 const postMemberLogin = async ({ email, password }) => {
   try {
-   
-
     const response = await axios.post(API_URLS.LOGIN, {
       email,
       password,
     });
-    
+
     return response.data.results;
   } catch (error) {
- 
     switch (error.response.status) {
       case ERROR_CODES.NOT_FOUND:
         return {

@@ -19,7 +19,26 @@ const getQuestion = async ({ difficulty }) => {
   }
 };
 
+const getFillInBlanks = async ({ difficulty }) => {
+  try {
+    const response = await axios.get(`${API_URLS.FILL_IN_BLANKS}/?difficulty=${difficulty}`);
+    return response.data;
+  } catch (error) {
+    switch (error.response.data.code) {
+      case ERROR_CODES.NOT_FOUND:
+        return {
+          error: 'Böyle bir kullanıcı bilgisi bulamadık.'
+        };
+      default:
+        return {
+          error: 'Internet bağlantınızı kontrol edin !'
+        };
+    }
+  }
+};
+
 module.exports = {
   getQuestion,
+  getFillInBlanks,
 
 };
