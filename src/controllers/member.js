@@ -15,6 +15,10 @@ const postMemberLogin = async ({ email, password }) => {
         return {
           error: 'Böyle bir kullanıcı bilgisi bulamadık.'
         };
+      case ERROR_CODES.VALUE_NOT_RIGHT:
+        return {
+          error: 'Giriş bilgileri doğru kriterleri karşılamamaktadır. Lütfen bilgilerinizden emin olun.'
+        };
       default:
         return {
           error: 'Internet bağlantınızı kontrol edin !'
