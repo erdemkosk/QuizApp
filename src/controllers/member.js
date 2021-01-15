@@ -31,13 +31,38 @@ const postMemberRegister = async ({ email, password, nameSurname }) => {
       nameSurname,
     };
     const response = await axios.post(API_URLS.REGISTER, data);
-    console.log(response.data);
     return response;
   } catch (error) {
-    switch (error.response.data.code) {
+    switch (error.response.status) {
       case ERROR_CODES.NOT_FOUND:
         return {
-          error: 'Böyle bir kullanıcı bilgisi bulamadık.'
+          error: 'Böyle bir kullanıcı sistemde zaten kayıtlı.'
+        };
+      case ERROR_CODES.VALUE_NOT_RIGHT:
+        return {
+          error: 'Girdiğiniz değerler kurallara uygun değildir.'
+        };
+      default:
+        return {
+          error: 'Internet bağlantınızı kontrol edin !'
+        };
+    }
+  }
+};
+
+const forgetPassword = async ({ email }) => {
+  try {
+    const data = {
+      email,
+    };
+    const response = await axios.post(API_URLS.FORGET_PASSWORD, data);
+
+    return response;
+  } catch (error) {
+    switch (error.response.status) {
+      case ERROR_CODES.NOT_FOUND:
+        return {
+          error: 'Şuan mail sistemimizde bir hata oluştu. Lütfen daha sonra tekrar deneyin.'
         };
       default:
         return {
@@ -50,4 +75,5 @@ const postMemberRegister = async ({ email, password, nameSurname }) => {
 module.exports = {
   postMemberLogin,
   postMemberRegister,
+  forgetPassword,
 };

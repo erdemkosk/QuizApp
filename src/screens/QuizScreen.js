@@ -17,7 +17,7 @@ import CountDown from 'react-native-countdown-component';
 import * as Speech from 'expo-speech';
 import { getQuestion, getFillInBlanks } from '../controllers/question';
 import {
-  WELCOME_MESSAGES, RETRY_MESSAGES, COLORS, STATE_COLORS
+  RETRY_MESSAGES, COLORS, STATE_COLORS
 } from '../core/constraint';
 
 export default class QuizScreen extends Component {
@@ -42,12 +42,11 @@ export default class QuizScreen extends Component {
       isAnsweredSuccesfull: false,
       successfullCount: 0,
       failedCount: 0,
-      time: 0,
+      time: 10,
       questionCountPerState: 4,
       answerSum: 0,
       userDifficultyLevel: 1,
       userDifficultyState: 1,
-      isVisibleStartingModel: true,
       isVisibleSFailedModel: false,
       userPoint: 0,
       speedIcons: ['speedometer-slow', 'speedometer-medium', 'speedometer']
@@ -58,6 +57,8 @@ export default class QuizScreen extends Component {
     (async () => {
       await this.fetchQuestion();
     })();
+
+    this.startTime();
   }
 
   fetchQuestion = async () => {
@@ -118,7 +119,7 @@ export default class QuizScreen extends Component {
         }
 
         this.setState((prevState) => ({
-          time: prevState.isAnsweredSuccesfull && prevState.userDifficultyState < 3 ? prevState.time + 4 : prevState.userDifficultyState < 6 ? prevState.time + 3 : prevState.time + 2 ,
+          time: prevState.isAnsweredSuccesfull ? prevState.time + prevState.userDifficultyState * 2 : prevState.time,
           questionCountPerState: prevState.userDifficultyState * 2,
           isWaiting: false,
           isAnyButtonPressed: true,
@@ -140,10 +141,10 @@ export default class QuizScreen extends Component {
             userDifficultyState,
           });
         }
-        this.startTime();
       }, 1000);
 
       setTimeout(() => {
+        this.startTime();
         this.fetchQuestion();
         this.resetStates();
       }, 2000);
@@ -164,6 +165,7 @@ export default class QuizScreen extends Component {
       successfullCount: 0,
       failedCount: 0,
       isVisibleSFailedModel: true,
+      userPoint: 0,
     });
   }
 
@@ -187,6 +189,16 @@ export default class QuizScreen extends Component {
        Animated.timing(this.shakeAnimation, { toValue: 10, duration: 100, useNativeDriver: true }),
        Animated.timing(this.shakeAnimation, { toValue: 0, duration: 100, useNativeDriver: true })
      ]).start();
+   }
+
+   modelHandler =() => {
+     this.resetGame();
+     this.startTime();
+     this.setState({
+       isVisibleSFailedModel: false,
+       time: 10
+     });
+     this.fetchQuestion();
    }
 
    generateColorForHeader = () => {
@@ -248,16 +260,6 @@ export default class QuizScreen extends Component {
      return COLORS.DEFAULT;
    };
 
-  startingModelAction = () => {
-    this.startTime();
-
-    this.setState({
-      time: 10,
-      isVisibleStartingModel: false,
-      isVisibleSFailedModel: false,
-    });
-  }
-
   startTime = () => {
     this.interval = setInterval(() => {
       if (this.state.time <= 0) {
@@ -291,26 +293,6 @@ export default class QuizScreen extends Component {
             </Right>
           </Header>
           <Content padder contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
-            <Modal isVisible={this.state.isVisibleStartingModel}>
-              <Card style={{ backgroundColor: 'transparent' }}>
-                <CardItem>
-                  <Body style={{ alignItems: 'center' }}>
-                    <Image source={require('../../assets/logo.png')} style={{ width: 300 }} resizeMode="contain" />
-                    <Text>İngilizce kelime öğrenmenin en kolay yolu 🤙. Boş zamanlarında senin için oluşturulan rastgele ingilizce kelime testlerini cevapla 🙏 Kendini geliştir!</Text>
-                    <Button
-                      style={{ marginTop: 30 }}
-                      full
-                      bordered
-                      onPress={() => {
-                        this.startingModelAction();
-                      }}
-                    >
-                      <Text>{WELCOME_MESSAGES[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
-                    </Button>
-                  </Body>
-                </CardItem>
-              </Card>
-            </Modal>
             <Modal isVisible={this.state.isVisibleSFailedModel}>
               <Card style={{ backgroundColor: 'transparent' }}>
                 <CardItem>
@@ -322,7 +304,7 @@ export default class QuizScreen extends Component {
                       full
                       bordered
                       onPress={() => {
-                        this.startingModelAction();
+                        this.modelHandler();
                       }}
                     >
                       <Text>{RETRY_MESSAGES[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>

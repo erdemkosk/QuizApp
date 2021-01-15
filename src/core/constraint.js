@@ -5,6 +5,7 @@ const API_URLS = {
   REGISTER: `${baseUrl}member/register/`,
   QUESTION: `${baseUrl}question`,
   FILL_IN_BLANKS: `${baseUrl}question/fill-in-blanks`,
+  FORGET_PASSWORD: `${baseUrl}member/forget-password/`
 };
 
 const ERROR_CODES = {

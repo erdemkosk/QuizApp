@@ -1,9 +1,8 @@
 import React, { memo, useState } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity
+  View, Text, StyleSheet, TouchableOpacity, Image
 } from 'react-native';
 import Background from '../components/Background';
-import Logo from '../components/Logo';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
@@ -14,7 +13,6 @@ import {
   passwordValidator,
   nameValidator
 } from '../core/utils';
-import { signInUser } from '../api/auth-api';
 import Toast from '../components/Toast';
 import { postMemberRegister } from '../controllers/member';
 
@@ -51,18 +49,16 @@ const RegisterScreen = ({ navigation }) => {
       setError(response.error);
     }
 
-    if (response.error) {
-      setError(response.error);
-    }
-
     setLoading(false);
+
+    navigation.navigate('LoginScreen');
   };
 
   return (
     <Background>
       <BackButton goBack={() => navigation.navigate('HomeScreen')} />
 
-      <Logo />
+      <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
 
       <Header>Hesap Oluştur</Header>
 

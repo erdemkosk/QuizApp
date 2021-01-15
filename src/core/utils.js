@@ -2,7 +2,7 @@ export const emailValidator = (email) => {
   const re = /\S+@\S+\.\S+/;
 
   if (!email || email.length <= 0) return 'Email alanı boş olamaz😧.';
-  if (!re.test(email)) return 'Ooops! We need a valid email address.';
+  if (!re.test(email)) return 'Ooops! Gerçek bir email adresi olmalıdır.';
 
   return '';
 };
