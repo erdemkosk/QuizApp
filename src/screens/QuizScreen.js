@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/accessible-emoji */
 /* eslint-disable max-len */
 /* eslint-disable import/named */
@@ -48,6 +49,7 @@ export default class QuizScreen extends Component {
       userDifficultyState: 1,
       isVisibleStartingModel: true,
       isVisibleSFailedModel: false,
+      userPoint: 0,
       speedIcons: ['speedometer-slow', 'speedometer-medium', 'speedometer']
     };
   }
@@ -102,12 +104,13 @@ export default class QuizScreen extends Component {
        && !this.state.button4clicked) {
       const stateName = `button${buttonNumber}clicked`;
 
+      this.stopTime();
+
       this.setState((prevState) => ({
         [stateName]: true,
         isWaiting: true,
         isAnsweredSuccesfull: prevState.rightAnswer === buttonNumber - 1
       }));
-     
 
       setTimeout(() => {
         if (this.state.isAnsweredSuccesfull === false) {
@@ -115,14 +118,15 @@ export default class QuizScreen extends Component {
         }
 
         this.setState((prevState) => ({
-          questionCountPerState: prevState.userDifficultyState * 2 ,
-          time: prevState.rightAnswer === buttonNumber - 1 ? prevState.time + Math.ceil(20 / prevState.userDifficultyState) : prevState.time,
+          time: prevState.isAnsweredSuccesfull && prevState.userDifficultyState < 3 ? prevState.time + 4 : prevState.userDifficultyState < 6 ? prevState.time + 3 : prevState.time + 2 ,
+          questionCountPerState: prevState.userDifficultyState * 2,
           isWaiting: false,
           isAnyButtonPressed: true,
           successfullCount: prevState.isAnsweredSuccesfull ? prevState.successfullCount + 1 : prevState.successfullCount,
           failedCount: !prevState.isAnsweredSuccesfull ? prevState.failedCount + 1 : prevState.failedCount,
           // eslint-disable-next-line no-nested-ternary
           answerSum: prevState.isAnsweredSuccesfull ? prevState.answerSum + 1 : prevState.answerSum > 0 ? prevState.answerSum - 1 : prevState.answerSum,
+          userPoint: prevState.isAnsweredSuccesfull ? prevState.userPoint + prevState.userDifficultyState : prevState.userPoint,
         }));
 
         const answerSum = 0;
@@ -136,6 +140,7 @@ export default class QuizScreen extends Component {
             userDifficultyState,
           });
         }
+        this.startTime();
       }, 1000);
 
       setTimeout(() => {
@@ -150,7 +155,7 @@ export default class QuizScreen extends Component {
   }
 
   resetGame = () => {
-    clearInterval(this.interval);
+    this.stopTime();
     this.setState({
       isVisible: true,
       answerSum: 0,
@@ -244,18 +249,26 @@ export default class QuizScreen extends Component {
    };
 
   startingModelAction = () => {
-    this.interval = setInterval(() => {
-      if (this.state.time <= 0) {
-        this.resetGame();
-      }
-      this.setState((prevState) => ({ time: prevState.time - 1 }));
-    }, 1000);
+    this.startTime();
 
     this.setState({
       time: 10,
       isVisibleStartingModel: false,
       isVisibleSFailedModel: false,
     });
+  }
+
+  startTime = () => {
+    this.interval = setInterval(() => {
+      if (this.state.time <= 0) {
+        this.resetGame();
+      }
+      this.setState((prevState) => ({ time: prevState.time - 1 }));
+    }, 1000);
+  }
+
+  stopTime = () => {
+    clearInterval(this.interval);
   }
 
   render() {
@@ -376,7 +389,9 @@ export default class QuizScreen extends Component {
 
                 <Badge primary style={{ backgroundColor: '#6C757D' }}>
                   <Chip outlined icon="layers">
-                    223 Puan
+                    {this.state.userPoint}
+                    {' '}
+                    Puan
                   </Chip>
 
                 </Badge>
