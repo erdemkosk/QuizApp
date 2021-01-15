@@ -5,13 +5,13 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import {
-  StyleSheet, ImageBackground, Animated, Image
+  StyleSheet, ImageBackground, Animated, Image, View
 } from 'react-native';
 import {
   Body, Left, Badge, Button, Header, Content, Card, CardItem, Text, Icon, Right
 } from 'native-base';
 import Modal from 'react-native-modal';
-import { ProgressBar } from 'react-native-paper';
+import { ProgressBar, Chip } from 'react-native-paper';
 import CountDown from 'react-native-countdown-component';
 import * as Speech from 'expo-speech';
 import { getQuestion, getFillInBlanks } from '../controllers/question';
@@ -48,6 +48,7 @@ export default class QuizScreen extends Component {
       userDifficultyState: 1,
       isVisibleStartingModel: true,
       isVisibleSFailedModel: false,
+      speedIcons: ['speedometer-slow', 'speedometer-medium', 'speedometer']
     };
   }
 
@@ -106,16 +107,7 @@ export default class QuizScreen extends Component {
         isWaiting: true,
         isAnsweredSuccesfull: prevState.rightAnswer === buttonNumber - 1
       }));
-      const userDifficultyState = this.state.answerSum / this.state.questionCountPerState === 1 ? this.state.userDifficultyState + 1 : this.state.userDifficultyState;
-      const userDifficultyLevel = this.state.userDifficultyLevel < 7 ? Math.ceil(userDifficultyState / 2) : this.state.userDifficultyLevel;
-
-      const answerSum = 0;
-
-      if (userDifficultyState !== this.state.userDifficultyState) {
-        this.setState({
-          answerSum,
-        });
-      }
+     
 
       setTimeout(() => {
         if (this.state.isAnsweredSuccesfull === false) {
@@ -123,16 +115,27 @@ export default class QuizScreen extends Component {
         }
 
         this.setState((prevState) => ({
-          time: prevState.rightAnswer === buttonNumber - 1 ? prevState.time + Math.ceil(6 / prevState.userDifficultyState) : prevState.time,
+          questionCountPerState: prevState.userDifficultyState * 2 ,
+          time: prevState.rightAnswer === buttonNumber - 1 ? prevState.time + Math.ceil(20 / prevState.userDifficultyState) : prevState.time,
           isWaiting: false,
           isAnyButtonPressed: true,
           successfullCount: prevState.isAnsweredSuccesfull ? prevState.successfullCount + 1 : prevState.successfullCount,
           failedCount: !prevState.isAnsweredSuccesfull ? prevState.failedCount + 1 : prevState.failedCount,
           // eslint-disable-next-line no-nested-ternary
           answerSum: prevState.isAnsweredSuccesfull ? prevState.answerSum + 1 : prevState.answerSum > 0 ? prevState.answerSum - 1 : prevState.answerSum,
-          userDifficultyLevel,
-          userDifficultyState,
         }));
+
+        const answerSum = 0;
+        const userDifficultyState = this.state.answerSum / this.state.questionCountPerState === 1 ? this.state.userDifficultyState + 1 : this.state.userDifficultyState;
+        const userDifficultyLevel = this.state.userDifficultyLevel < 7 ? Math.ceil(userDifficultyState / 2) : this.state.userDifficultyLevel;
+
+        if (userDifficultyState !== this.state.userDifficultyState) {
+          this.setState({
+            answerSum,
+            userDifficultyLevel,
+            userDifficultyState,
+          });
+        }
       }, 1000);
 
       setTimeout(() => {
@@ -152,6 +155,7 @@ export default class QuizScreen extends Component {
       isVisible: true,
       answerSum: 0,
       userDifficultyLevel: 1,
+      userDifficultyState: 1,
       successfullCount: 0,
       failedCount: 0,
       isVisibleSFailedModel: true,
@@ -314,6 +318,7 @@ export default class QuizScreen extends Component {
                 </CardItem>
               </Card>
             </Modal>
+
             <CountDown
               style={{ margin: 15 }}
               until={this.state.time}
@@ -324,24 +329,59 @@ export default class QuizScreen extends Component {
               timeLabels={{ m: 'Dakika', s: 'Saniye' }}
               running={!this.state.isWaiting}
             />
+
             <Button
               full
               style={{
                 backgroundColor: '#6C757D',
               }}
             >
-              <Badge primary style={{ backgroundColor: '#6C757D' }}>
-                <Text style={{ fontWeight: 'bold' }}>
-                  Seviye
-                  {' '}
-                  {this.state.userDifficultyLevel}
-                </Text>
-                <Text style={{ fontWeight: 'bold', color: this.generateColorForBar() }}>
-                  X
-                  {' '}
-                  {this.state.userDifficultyState}
-                </Text>
-              </Badge>
+              <View style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+              >
+                <Badge primary style={{ backgroundColor: '#6C757D' }}>
+                  <Chip icon={this.state.speedIcons[this.state.answerSum < 3 ? this.state.answerSum : 2]}>
+                    T:
+
+                    {this.state.successfullCount + this.state.failedCount}
+                    {' '}
+                    D:
+
+                    {this.state.successfullCount}
+                    {' '}
+                    Y:
+
+                    {this.state.failedCount}
+                    {' '}
+                  </Chip>
+
+                </Badge>
+
+                <Badge primary style={{ backgroundColor: '#6C757D' }}>
+                  <Text style={{ fontWeight: 'bold' }}>
+                    Seviye
+                    {' '}
+                    {this.state.userDifficultyLevel}
+                  </Text>
+                  <Text style={{ fontWeight: 'bold', color: this.generateColorForBar() }}>
+                    X
+                    {' '}
+                    {this.state.userDifficultyState}
+                  </Text>
+
+                </Badge>
+
+                <Badge primary style={{ backgroundColor: '#6C757D' }}>
+                  <Chip outlined icon="layers">
+                    223 Puan
+                  </Chip>
+
+                </Badge>
+              </View>
+
             </Button>
             <ProgressBar progress={(this.state.answerSum) / this.state.questionCountPerState} color={this.generateColorForBar()} />
 
@@ -353,24 +393,7 @@ export default class QuizScreen extends Component {
                     ?
                   </Text>
                   <Body />
-                  <Right>
-                    <Button style={{ backgroundColor: '#6C757D' }}>
-                      <Badge primary style={{ backgroundColor: '#6C757D' }}>
-                        <Text style={{ fontWeight: 'bold' }}>
-                          T
-                        </Text>
-                        <Text>{this.state.successfullCount + this.state.failedCount}</Text>
-                      </Badge>
-                      <Badge primary style={{ backgroundColor: '#6C757D' }}>
-                        <Text style={{ fontWeight: 'bold' }}>D</Text>
-                        <Text>{this.state.successfullCount}</Text>
-                      </Badge>
-                      <Badge primary style={{ backgroundColor: '#6C757D' }}>
-                        <Text style={{ fontWeight: 'bold' }}>Y</Text>
-                        <Text>{this.state.failedCount}</Text>
-                      </Badge>
-                    </Button>
-                  </Right>
+                  <Right />
                 </CardItem>
                 <Content />
               </CardItem>
