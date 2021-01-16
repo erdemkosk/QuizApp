@@ -17,7 +17,7 @@ import CountDown from 'react-native-countdown-component';
 import * as Speech from 'expo-speech';
 import { getQuestion, getFillInBlanks } from '../controllers/question';
 import {
-  RETRY_MESSAGES, COLORS, STATE_COLORS
+  RETRY_MESSAGES, COLORS, STATE_COLORS, QUIZ_TYPES, SPEED_ICONS,
 } from '../core/constraint';
 
 export default class QuizScreen extends Component {
@@ -49,7 +49,6 @@ export default class QuizScreen extends Component {
       userDifficultyState: 1,
       isVisibleSFailedModel: false,
       userPoint: 0,
-      speedIcons: ['speedometer-slow', 'speedometer-medium', 'speedometer']
     };
   }
 
@@ -57,6 +56,13 @@ export default class QuizScreen extends Component {
     (async () => {
       await this.fetchQuestion();
     })();
+
+    const { params } = this.props.navigation.state;
+
+    this.setState({
+      // eslint-disable-next-line react/no-access-state-in-setstate
+      gameType: params.type,
+    });
 
     this.startTime();
   }
@@ -66,7 +72,7 @@ export default class QuizScreen extends Component {
 
     const { params } = this.props.navigation.state;
 
-    if (params.type === 1) {
+    if (params.type === QUIZ_TYPES.QUIZ_GAME || params.type === QUIZ_TYPES.QUIZ_BASIC) {
       response = await getQuestion({ difficulty: this.state.userDifficultyLevel });
     } else {
       response = await getFillInBlanks({ difficulty: this.state.userDifficultyLevel });
@@ -74,6 +80,7 @@ export default class QuizScreen extends Component {
 
     this.setState({
       // eslint-disable-next-line react/no-access-state-in-setstate
+      gameType: params.type,
       questionText: response.results.question.split('-')[0],
       rightAnswer: response.results.correctAnswer
     });
@@ -338,7 +345,7 @@ export default class QuizScreen extends Component {
               }}
               >
                 <Badge primary style={{ backgroundColor: '#6C757D' }}>
-                  <Chip icon={this.state.speedIcons[this.state.answerSum < 3 ? this.state.answerSum : 2]}>
+                  <Chip icon={SPEED_ICONS[this.state.answerSum < 3 ? this.state.answerSum : 2]}>
                     T:
 
                     {this.state.successfullCount + this.state.failedCount}

@@ -9,6 +9,7 @@ import {
   AuthLoadingScreen,
   Dashboard,
   QuizScreen,
+  QuizBasicScreen,
 } from './screens';
 
 const Router = createStackNavigator(
@@ -19,7 +20,8 @@ const Router = createStackNavigator(
     ForgotPasswordScreen,
     Dashboard,
     AuthLoadingScreen,
-    QuizScreen
+    QuizScreen,
+    QuizBasicScreen
   },
   {
     initialRouteName: 'AuthLoadingScreen',

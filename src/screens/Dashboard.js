@@ -10,6 +10,9 @@ import Background from '../components/Background';
 import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
 import { removeItem, getItem } from '../services/deviceStorage';
+import {
+  QUIZ_TYPES,
+} from '../core/constraint';
 
 const logoutUser = async ({ navigation }) => {
   await removeItem({
@@ -20,11 +23,15 @@ const logoutUser = async ({ navigation }) => {
 };
 
 const moveQuizSecreen = async ({ navigation }) => {
-  navigation.navigate('QuizScreen', { type: 1 });
+  navigation.navigate('QuizScreen', { type: QUIZ_TYPES.QUIZ_GAME });
+};
+
+const moveBasicQuizSecreen = async ({ navigation }) => {
+  navigation.navigate('QuizBasicScreen', { type: QUIZ_TYPES.QUIZ_BASIC });
 };
 
 const moveBlankInFillsScreen = async ({ navigation }) => {
-  navigation.navigate('QuizScreen', { type: 2 });
+  navigation.navigate('QuizScreen', { type: QUIZ_TYPES.FILL_IN_BLANKS });
 };
 
 const Dashboard = ({ navigation }) => {
@@ -54,13 +61,16 @@ const Dashboard = ({ navigation }) => {
           {member.email}
         </Paragraph>
         <Button mode="outlined" onPress={() => moveQuizSecreen({ navigation })}>
-          Oyuna Başla
+          Mücadeleci 😱
+        </Button>
+        <Button mode="outlined" onPress={() => moveBasicQuizSecreen({ navigation })}>
+          Antreman Modu 🥸
         </Button>
         <Button mode="outlined" onPress={() => moveBlankInFillsScreen({ navigation })}>
-          Boşluk Doldurma
+          Boşluk Doldurma 🧐
         </Button>
         <Button mode="outlined" onPress={() => logoutUser({ navigation })}>
-          Çıkış Yap
+          Çıkış Yap 🧐
         </Button>
       </Background>
     </Container>

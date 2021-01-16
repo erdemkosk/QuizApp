@@ -13,6 +13,12 @@ const ERROR_CODES = {
   VALUE_NOT_RIGHT: 422,
 };
 
+const QUIZ_TYPES = {
+  QUIZ_GAME: 1,
+  QUIZ_BASIC: 2,
+  FILL_IN_BLANKS: 3,
+};
+
 const COLORS = {
   SELECTED: '#1266F1',
   SUCCESS: '#00B74A',
@@ -22,14 +28,16 @@ const COLORS = {
 
 const STATE_COLORS = ['#1abc9c', '#3498db', '#8e44ad', '#d35400', '#c0392b'];
 
-const WELCOME_MESSAGES = ['Hadi Başlayalım 🤙', 'Tekrar Hoşgeldin 🤩', 'İngilizce Öğrenme Vakti 🔥', 'Hadi biraz antreman 😋', 'Gönderin Gelsin 😬'];
+const SPEED_ICONS = ['speedometer-slow', 'speedometer-medium', 'speedometer'];
+
 const RETRY_MESSAGES = ['Hadi Tekrar Başlayalım 🤙', 'Daha bu başlangıç 🤩', 'Kol Bozuktu 🔥', 'Hızlanmak şart 😋', 'Bir daha deneyeyim 😬'];
 
 module.exports = {
   API_URLS,
   ERROR_CODES,
-  WELCOME_MESSAGES,
+  SPEED_ICONS,
   RETRY_MESSAGES,
   COLORS,
-  STATE_COLORS
+  STATE_COLORS,
+  QUIZ_TYPES
 };
