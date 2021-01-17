@@ -1,5 +1,6 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable global-require */
-import React, { memo, useEffect } from 'react';
+import React, { Component } from 'react';
 import {
   TouchableOpacity, StyleSheet, Text, View, Image
 } from 'react-native';
@@ -10,84 +11,110 @@ import Background from '../components/Background';
 import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
 import { removeItem, getItem } from '../services/deviceStorage';
+import { getMember } from '../controllers/member';
 import {
   QUIZ_TYPES,
 } from '../core/constraint';
 
-const logoutUser = async ({ navigation }) => {
-  await removeItem({
-    key: 'user',
-  });
+export default class Dashboard extends Component {
+  constructor(props) {
+    super(props);
 
-  navigation.navigate('LoginScreen');
-};
+    this.state = {
+      token: '',
+      id: '',
+      member: {},
 
-const moveQuizSecreen = async ({ navigation }) => {
-  navigation.navigate('QuizScreen', { type: QUIZ_TYPES.QUIZ_GAME });
-};
+    };
+  }
 
-const moveBasicQuizSecreen = async ({ navigation }) => {
-  navigation.navigate('QuizBasicScreen', { type: QUIZ_TYPES.QUIZ_BASIC });
-};
+  componentDidMount = () => {
+    this.loadToken();
+  }
 
-const moveBlankInFillsScreen = async ({ navigation }) => {
-  navigation.navigate('QuizScreen', { type: QUIZ_TYPES.FILL_IN_BLANKS });
-};
+  loadToken = async () => {
+    const value = await getItem({ key: 'token' });
+    const response = JSON.parse(value);
+    this.setState({
+      token: response.token,
+      id: response.id,
+    });
+    await this.loadMember();
+  }
 
-const moveSettingsScreen = async ({ navigation }) => {
-  navigation.navigate('SettingsScreen');
-};
+  loadMember = async () => {
+    const member = await getMember({ id: this.state.id, token: this.state.token });
 
-const Dashboard = ({ navigation }) => {
-  const [member, setMember] = React.useState(0);
-  useEffect(() => {
-    // Create an scoped async function in the hook
-    async function loadUser() {
-      const value = await getItem({ key: 'user' });
-      const response = JSON.parse(value);
-      setMember(response);
-    }
-    // Execute the created function directly
-    loadUser();
-  }, []);
+    this.setState({
+      member,
+    });
+  }
 
-  return (
-    <Container>
-      <Background>
-        <Content style={styles.background}>
-          <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
+   logoutUser = async () => {
+     await removeItem({
+       key: 'token',
+     });
 
+     this.props.navigation.navigate('LoginScreen');
+   };
 
-          { member.nameSurname
-&&  <Paragraph> <UserAvatar size= {100}  name={member.nameSurname} bgColor="#1266F1" />  </Paragraph>}
+   moveQuizSecreen = async () => {
+     this.props.navigation.navigate('QuizScreen', { type: QUIZ_TYPES.QUIZ_GAME });
+   };
+
+   moveBasicQuizSecreen = async () => {
+     this.props.navigation.navigate('QuizBasicScreen', { type: QUIZ_TYPES.QUIZ_BASIC });
+   };
+
+   moveBlankInFillsScreen = async () => {
+     this.props.navigation.navigate('QuizScreen', { type: QUIZ_TYPES.FILL_IN_BLANKS });
+   };
+
+   moveSettingsScreen = async () => {
+     this.props.navigation.navigate('SettingsScreen');
+   };
+
+   render() {
+     return (
+       <Container>
+         <Background>
+           <Content style={styles.background}>
+             <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
+
+             { this.state.member.nameSurname
+&&  <Paragraph>   </Paragraph>}
           <Paragraph>
-            {member.nameSurname}
+            {this.state.member.nameSurname}
           </Paragraph>
           <Paragraph>
-            {member.email}
+            Tüm kullanıcılar içinde {this.state.member.rank}. sıradasın!
           </Paragraph>
-          <Button mode="outlined" onPress={() => moveQuizSecreen({ navigation })}>
-            Mücadeleci 😱
-          </Button>
-          <Button mode="outlined" onPress={() => moveBasicQuizSecreen({ navigation })}>
-            Antreman Modu 🥸
-          </Button>
-          <Button mode="outlined" onPress={() => moveBlankInFillsScreen({ navigation })}>
-            Boşluk Doldurma 🧐
-          </Button>
-          <Button mode="outlined" onPress={() => moveSettingsScreen({ navigation })}>
-            Ayarlar
-          </Button>
-          <Button mode="outlined" onPress={() => logoutUser({ navigation })}>
-            Çıkış Yap 🧐
-          </Button>
-        </Content>
+          <Paragraph>
+            {this.state.member.email}
+          </Paragraph>
 
-      </Background>
-    </Container>
-  );
-};
+             <Button mode="outlined" onPress={() => this.moveQuizSecreen()}>
+               Mücadeleci 😱
+             </Button>
+             <Button mode="outlined" onPress={() => this.moveBasicQuizSecreen()}>
+               Antreman Modu 🥸
+             </Button>
+             <Button mode="outlined" onPress={() => this.moveBlankInFillsScreen()}>
+               Boşluk Doldurma 🧐
+             </Button>
+             <Button mode="outlined" onPress={() => this.moveSettingsScreen()}>
+               Ayarlar
+             </Button>
+             <Button mode="outlined" onPress={() => this.logoutUser()}>
+               Çıkış Yap 🧐
+             </Button>
+           </Content>
 
+         </Background>
+       </Container>
+     );
+   }
+}
 const styles = StyleSheet.create({
   background: {
     flex: 1,
@@ -103,5 +130,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
-
-export default memo(Dashboard);

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { memo, useState, useEffect } from 'react';
 import {
   TouchableOpacity, StyleSheet, Text, View, Image
@@ -51,28 +52,17 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
 
-    await saveItem({
-      key: 'user',
-      value: JSON.stringify({
-        createdAt: response.member.createdAt,
-        email: response.member.email,
-        nameSurname: response.member.nameSurname,
-        token: response.token,
-      })
-    });
-
-    await Promise.all([saveItem({
-      key: 'user',
-      value: JSON.stringify({
-        createdAt: response.member.createdAt,
-        email: response.member.email,
-        nameSurname: response.member.nameSurname,
-        token: response.token,
-      })
-    }), await saveItem({
-      key: 'previous-user-email',
-      value: response.member.email,
-    })]);
+    await Promise.all([
+      await saveItem({
+        key: 'previous-user-email',
+        value: response.member.email,
+      }), await saveItem({
+        key: 'token',
+        value: JSON.stringify({
+          id: response.member._id,
+          token: response.token,
+        }),
+      })]);
 
     setLoading(false);
 

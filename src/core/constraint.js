@@ -5,10 +5,13 @@ const API_URLS = {
   REGISTER: `${baseUrl}member/register/`,
   QUESTION: `${baseUrl}question`,
   FILL_IN_BLANKS: `${baseUrl}question/fill-in-blanks`,
-  FORGET_PASSWORD: `${baseUrl}member/forget-password/`
+  FORGET_PASSWORD: `${baseUrl}member/forget-password/`,
+  GET_MEMBER: `${baseUrl}member/?id=`
 };
 
 const ERROR_CODES = {
+  UNAUTHORIZED: 401,
+  NOT_VALID_TOKEN: 403,
   NOT_FOUND: 404,
   VALUE_NOT_RIGHT: 422,
 };

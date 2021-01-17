@@ -8,7 +8,8 @@ const AuthLoadingScreen = ({ navigation }) => {
   useEffect(() => {
     // Create an scoped async function in the hook
     async function loadUserMail() {
-      const user = await getItem({ key: 'user' });
+      const user = await getItem({ key: 'token' });
+     
       if (user) {
         // User is logged in
         navigation.navigate('Dashboard');

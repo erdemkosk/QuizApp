@@ -76,8 +76,33 @@ const forgetPassword = async ({ email }) => {
   }
 };
 
+const getMember = async ({ id, token }) => {
+  try {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const response = await axios.get(API_URLS.GET_MEMBER + id, options);
+
+    return response.data.results.member;
+  } catch (error) {
+    switch (error.response.status) {
+      case ERROR_CODES.UNAUTHORIZED:
+        return {
+          error: 'Lütfen sistemde tekrar giriş yapın!'
+        };
+      default:
+        return {
+          error: 'Internet bağlantınızı kontrol edin !'
+        };
+    }
+  }
+};
+
 module.exports = {
   postMemberLogin,
   postMemberRegister,
   forgetPassword,
+  getMember
 };
