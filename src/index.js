@@ -10,7 +10,8 @@ import {
   Dashboard,
   QuizScreen,
   QuizBasicScreen,
-  SettingsScreen
+  SettingsScreen,
+  ProfileScreen
 } from './screens';
 
 const Router = createStackNavigator(
@@ -24,6 +25,7 @@ const Router = createStackNavigator(
     QuizScreen,
     QuizBasicScreen,
     SettingsScreen,
+    ProfileScreen
   },
   {
     initialRouteName: 'AuthLoadingScreen',

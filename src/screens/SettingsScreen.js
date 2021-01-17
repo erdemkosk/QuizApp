@@ -62,7 +62,7 @@ export default class SettingsScreen extends Component {
             </ListItem>
 
             <Separator bordered>
-              <Text style={{ fontWeight: 'bold' }}> İçerik ve Test 👋</Text>
+              <Text style={{ fontWeight: 'bold' }}> Geliştirici , İçerik ve Test 👋</Text>
             </Separator>
             <ListItem icon>
               <Left>
@@ -72,6 +72,18 @@ export default class SettingsScreen extends Component {
               </Left>
               <Body>
                 <Text>Övgüm Kahraman</Text>
+              </Body>
+            </ListItem>
+            <ListItem icon>
+              <Left>
+                <Button style={{ backgroundColor: '#007AFF' }}>
+                  <Icon active name="md-contact" />
+                </Button>
+              </Left>
+              <Body>
+                <Text>
+                  Osman Mert Acar
+                </Text>
               </Body>
             </ListItem>
 
@@ -90,7 +102,7 @@ export default class SettingsScreen extends Component {
             </ListItem>
 
             <Separator bordered>
-              <Text style={{ fontWeight: 'bold' }}> Emeği Geçenler 🌹</Text>
+              <Text style={{ fontWeight: 'bold' }}> Emeği Geçenler 🤩</Text>
             </Separator>
             <ListItem icon>
               <Left>

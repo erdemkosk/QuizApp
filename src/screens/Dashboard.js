@@ -74,6 +74,10 @@ export default class Dashboard extends Component {
      this.props.navigation.navigate('SettingsScreen');
    };
 
+   moveProfileScreen= async () => {
+     this.props.navigation.navigate('ProfileScreen', { member: this.state.member });
+   };
+
    render() {
      return (
        <Container>
@@ -82,16 +86,19 @@ export default class Dashboard extends Component {
              <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
 
              { this.state.member.nameSurname
-&&  <Paragraph>   </Paragraph>}
-          <Paragraph>
-            {this.state.member.nameSurname}
-          </Paragraph>
-          <Paragraph>
-            Tüm kullanıcılar içinde {this.state.member.rank}. sıradasın!
-          </Paragraph>
-          <Paragraph>
-            {this.state.member.email}
-          </Paragraph>
+&& <Paragraph>   </Paragraph>}
+             <Paragraph>
+               {this.state.member.nameSurname}
+             </Paragraph>
+             <Paragraph>
+               Tüm kullanıcılar içinde
+               {' '}
+               {this.state.member.rank}
+               . sıradasın!
+             </Paragraph>
+             <Paragraph>
+               {this.state.member.email}
+             </Paragraph>
 
              <Button mode="outlined" onPress={() => this.moveQuizSecreen()}>
                Mücadeleci 😱
@@ -104,6 +111,9 @@ export default class Dashboard extends Component {
              </Button>
              <Button mode="outlined" onPress={() => this.moveSettingsScreen()}>
                Ayarlar
+             </Button>
+             <Button mode="outlined" onPress={() => this.moveProfileScreen()}>
+               Profile
              </Button>
              <Button mode="outlined" onPress={() => this.logoutUser()}>
                Çıkış Yap 🧐

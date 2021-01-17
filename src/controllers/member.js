@@ -100,9 +100,47 @@ const getMember = async ({ id, token }) => {
   }
 };
 
+const updateMember = async ({
+  id, nameSurname, email, password, token
+}) => {
+  try {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
+    const data = {
+      nameSurname,
+      password,
+      email,
+    };
+
+    console.log(API_URLS.UPDATE_MEMBER + id);
+
+    const response = await axios.put(API_URLS.UPDATE_MEMBER + id, data, options);
+
+    console.log(response);
+
+    return response.data.results.member;
+  } catch (error) {
+    switch (error.response.status) {
+      case ERROR_CODES.UNAUTHORIZED:
+        return {
+          error: 'Lütfen sistemde tekrar giriş yapın!'
+        };
+      default:
+        return {
+          error: 'Internet bağlantınızı kontrol edin !'
+        };
+    }
+  }
+};
+
 module.exports = {
   postMemberLogin,
   postMemberRegister,
   forgetPassword,
-  getMember
+  getMember,
+  updateMember,
 };

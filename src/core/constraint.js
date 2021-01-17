@@ -6,7 +6,8 @@ const API_URLS = {
   QUESTION: `${baseUrl}question`,
   FILL_IN_BLANKS: `${baseUrl}question/fill-in-blanks`,
   FORGET_PASSWORD: `${baseUrl}member/forget-password/`,
-  GET_MEMBER: `${baseUrl}member/?id=`
+  GET_MEMBER: `${baseUrl}member/?id=`,
+  UPDATE_MEMBER: `${baseUrl}member/?id=`
 };
 
 const ERROR_CODES = {
