@@ -41,7 +41,7 @@ export default class PdfScreen extends Component {
           <WebView
             bounces={false}
             scrollEnabled
-            source={{ uri: 'http://www.africau.edu/images/default/sample.pdf' }}
+            source={{ uri: 'http://docs.google.com/gview?embedded=true&url=http://www.africau.edu/images/default/sample.pdf' }}
           />
 
         </View>
