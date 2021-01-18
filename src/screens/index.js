@@ -9,3 +9,4 @@ export { default as QuizBasicScreen } from './QuizBasicScreen';
 export { default as SettingsScreen } from './SettingsScreen';
 export { default as ProfileScreen } from './ProfileScreen';
 export { default as ToptenScreen } from './ToptenScreen';
+export { default as PdfScreen } from './PdfScreen';

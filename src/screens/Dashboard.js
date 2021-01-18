@@ -90,6 +90,10 @@ export default class Dashboard extends Component {
      this.props.navigation.navigate('ToptenScreen');
    };
 
+   movePdfScreen = async () => {
+     this.props.navigation.navigate('PdfScreen');
+   };
+
    startSpring() {
      this.setState({
        startValue: new Animated.Value(0.7),
@@ -128,7 +132,7 @@ export default class Dashboard extends Component {
                  🥸 Antreman 🥸
                </Button>
                <Button mode="outlined" onPress={() => this.moveBlankInFillsScreen()}>
-                 🧐 Boşluk Doldurma 🧐
+                 😎 Boşluk Doldurma 😎
                </Button>
                <Button mode="outlined" onPress={() => this.moveToptenScreen()}>
                  👑 Liderlik Tablosu 👑
@@ -138,6 +142,9 @@ export default class Dashboard extends Component {
                </Button>
                <Button mode="outlined" onPress={() => this.moveProfileScreen()}>
                  👤 Profil 👤
+               </Button>
+               <Button mode="outlined" onPress={() => this.movePdfScreen()}>
+                 🧾 Pdf Dersler 🧾
                </Button>
                <Button mode="outlined" onPress={() => this.logoutUser()}>
                  🧐 Çıkış Yap 🧐
