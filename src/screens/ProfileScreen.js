@@ -16,28 +16,32 @@ import ProfileEdit from '../components/ProfileEdit';
 export default class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = { isEdit: false, };
+    this.state = { isEdit: false, member: '' };
   }
 
   componentDidMount() {
+    const { member } = this.props.navigation.state.params;
 
+    this.setState({
+      member,
+    });
   }
 
   navigateToDashboard = async () => {
     this.props.navigation.navigate('Dashboard');
   };
 
-
   renderUserInfoOrEditData() {
     const { params } = this.props.navigation.state;
+
     switch (this.state.isEdit) {
       case true:
 
-        return (<ProfileEdit navigateToDashboard= {this.navigateToDashboard} Member={params.member} />);
+        return (<ProfileEdit navigateToDashboard={this.navigateToDashboard} Member={params.member} />);
         break;
       case false:
 
-        return (<ProfileInfo Member={params.member}/>);
+        return (<ProfileInfo Member={params.member} />);
         break;
     }
   }
@@ -74,6 +78,9 @@ export default class Profile extends Component {
   }
 
   render() {
+    if (!this.state.member) {
+      return <Text>Loading...</Text>;
+    }
     return (
       <Container style={styles.container}>
         <Header>
@@ -89,10 +96,10 @@ export default class Profile extends Component {
 
           <View style={styles.header}>
             <View style={styles.headerContent}>
-              <UserAvatar color="#1266F1" size={90} name="Erdem Köşk" />
+              <UserAvatar color="#FFFFFF" size={90} bgColor="#1266F1" name= {this.state.member.nameSurname} />
 
               <Text style={styles.name}>
-                Mustafa Erdem Köşk
+                {this.state.member.nameSurname}
               </Text>
               <View style={{ alignItems: 'center', marginTop: 10 }}>
                 {this.renderUserInfoOrEditButton()}
@@ -133,6 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     fontWeight: '600',
+    marginTop: 10,
   },
   bodyContent: {
     flex: 1,

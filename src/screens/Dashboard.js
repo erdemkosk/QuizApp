@@ -2,11 +2,10 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import {
-  TouchableOpacity, StyleSheet, Text, View, Image
+  StyleSheet, Image, View, Animated
 } from 'react-native';
 
-import { Container, Content, Thumbnail } from 'native-base';
-import UserAvatar from 'react-native-user-avatar';
+import { Container, Content } from 'native-base';
 import Background from '../components/Background';
 import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
@@ -24,12 +23,22 @@ export default class Dashboard extends Component {
       token: '',
       id: '',
       member: {},
+      startValue: new Animated.Value(0.7),
+      endValue: 1,
 
     };
   }
 
   componentDidMount = () => {
     this.loadToken();
+
+    this.startSpring();
+
+    const { navigation } = this.props;
+    navigation.addListener('willFocus', async () => {
+      await this.loadMember();
+      this.startSpring();
+    });
   }
 
   loadToken = async () => {
@@ -78,47 +87,58 @@ export default class Dashboard extends Component {
      this.props.navigation.navigate('ProfileScreen', { member: this.state.member });
    };
 
+   startSpring() {
+     this.setState({
+       startValue: new Animated.Value(0.7),
+     });
+
+     Animated.spring(this.state.startValue, {
+       toValue: this.state.endValue,
+       friction: 1,
+       useNativeDriver: true,
+     }).start();
+   }
+
    render() {
      return (
        <Container>
          <Background>
-           <Content style={styles.background}>
-             <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
+           <View style={styles.container}>
+             <Animated.Image
+               source={require('../../assets/logo.png')}
+               style={{
+                 width: 275,
+                 transform: [
+                   {
+                     scale: this.state.startValue,
+                   },
+                 ],
+               }}
+               resizeMode="contain"
+             />
 
-             { this.state.member.nameSurname
-&& <Paragraph>   </Paragraph>}
-             <Paragraph>
-               {this.state.member.nameSurname}
-             </Paragraph>
-             <Paragraph>
-               Tüm kullanıcılar içinde
-               {' '}
-               {this.state.member.rank}
-               . sıradasın!
-             </Paragraph>
-             <Paragraph>
-               {this.state.member.email}
-             </Paragraph>
+             <View>
+               <Button mode="outlined" onPress={() => this.moveQuizSecreen()}>
+               😱 Yarışma 😱
+               </Button>
+               <Button mode="outlined" onPress={() => this.moveBasicQuizSecreen()}>
+               🥸 Antreman 🥸
+               </Button>
+               <Button mode="outlined" onPress={() => this.moveBlankInFillsScreen()}>
+               🧐 Boşluk Doldurma 🧐
+               </Button>
+               <Button mode="outlined" onPress={() => this.moveSettingsScreen()}>
+               ⚙️ Ayarlar ⚙️
+               </Button>
+               <Button mode="outlined" onPress={() => this.moveProfileScreen()}>
+               👤 Profil 👤
+               </Button>
+               <Button mode="outlined" onPress={() => this.logoutUser()}>
+               🧐 Çıkış Yap 🧐
+               </Button>
+             </View>
 
-             <Button mode="outlined" onPress={() => this.moveQuizSecreen()}>
-               Mücadeleci 😱
-             </Button>
-             <Button mode="outlined" onPress={() => this.moveBasicQuizSecreen()}>
-               Antreman Modu 🥸
-             </Button>
-             <Button mode="outlined" onPress={() => this.moveBlankInFillsScreen()}>
-               Boşluk Doldurma 🧐
-             </Button>
-             <Button mode="outlined" onPress={() => this.moveSettingsScreen()}>
-               Ayarlar
-             </Button>
-             <Button mode="outlined" onPress={() => this.moveProfileScreen()}>
-               Profile
-             </Button>
-             <Button mode="outlined" onPress={() => this.logoutUser()}>
-               Çıkış Yap 🧐
-             </Button>
-           </Content>
+           </View>
 
          </Background>
        </Container>
@@ -132,11 +152,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
     width: '100%',
-    maxWidth: 340,
-    alignSelf: 'center',
-    alignItems: 'center',
+
     justifyContent: 'center'
   }
 });
