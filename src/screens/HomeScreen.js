@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => (
       <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
 
       <Paragraph>
-        Hoşgeldin
+      İngilizce kelime öğrenmenin en kolay yolu 🤙. Boş zamanlarında senin için oluşturulan ingilizce kelime testlerini cevapla 🙏 Kendini geliştir!
       </Paragraph>
 
       <Button mode="outlined" onPress={() => navigation.navigate('LoginScreen')}>

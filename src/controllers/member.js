@@ -116,13 +116,28 @@ const updateMember = async ({
       email,
     };
 
-    console.log(API_URLS.UPDATE_MEMBER + id);
-
     const response = await axios.put(API_URLS.UPDATE_MEMBER + id, data, options);
 
-    console.log(response);
-
     return response.data.results.member;
+  } catch (error) {
+    switch (error.response.status) {
+      case ERROR_CODES.UNAUTHORIZED:
+        return {
+          error: 'Lütfen sistemde tekrar giriş yapın!'
+        };
+      default:
+        return {
+          error: 'Internet bağlantınızı kontrol edin !'
+        };
+    }
+  }
+};
+
+const getTopten = async () => {
+  try {
+    const response = await axios.get(API_URLS.TOP_TEN);
+
+    return response.data.results;
   } catch (error) {
     switch (error.response.status) {
       case ERROR_CODES.UNAUTHORIZED:
@@ -143,4 +158,5 @@ module.exports = {
   forgetPassword,
   getMember,
   updateMember,
+  getTopten,
 };

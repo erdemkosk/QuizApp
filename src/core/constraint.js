@@ -7,7 +7,9 @@ const API_URLS = {
   FILL_IN_BLANKS: `${baseUrl}question/fill-in-blanks`,
   FORGET_PASSWORD: `${baseUrl}member/forget-password/`,
   GET_MEMBER: `${baseUrl}member/?id=`,
-  UPDATE_MEMBER: `${baseUrl}member/?id=`
+  UPDATE_MEMBER: `${baseUrl}member/?id=`,
+  STATISTIC: `${baseUrl}statistic/`,
+  TOP_TEN: `${baseUrl}member/top-ten/`,
 };
 
 const ERROR_CODES = {

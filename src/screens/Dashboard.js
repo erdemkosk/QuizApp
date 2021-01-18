@@ -24,8 +24,7 @@ export default class Dashboard extends Component {
       id: '',
       member: {},
       startValue: new Animated.Value(0.7),
-      endValue: 1,
-
+      endValue: 1.1,
     };
   }
 
@@ -87,6 +86,10 @@ export default class Dashboard extends Component {
      this.props.navigation.navigate('ProfileScreen', { member: this.state.member });
    };
 
+   moveToptenScreen= async () => {
+     this.props.navigation.navigate('ToptenScreen');
+   };
+
    startSpring() {
      this.setState({
        startValue: new Animated.Value(0.7),
@@ -119,22 +122,25 @@ export default class Dashboard extends Component {
 
              <View>
                <Button mode="outlined" onPress={() => this.moveQuizSecreen()}>
-               😱 Yarışma 😱
+                 😱 Yarışma 😱
                </Button>
                <Button mode="outlined" onPress={() => this.moveBasicQuizSecreen()}>
-               🥸 Antreman 🥸
+                 🥸 Antreman 🥸
                </Button>
                <Button mode="outlined" onPress={() => this.moveBlankInFillsScreen()}>
-               🧐 Boşluk Doldurma 🧐
+                 🧐 Boşluk Doldurma 🧐
+               </Button>
+               <Button mode="outlined" onPress={() => this.moveToptenScreen()}>
+                 👑 Liderlik Tablosu 👑
                </Button>
                <Button mode="outlined" onPress={() => this.moveSettingsScreen()}>
-               ⚙️ Ayarlar ⚙️
+                 ⚙️ Ayarlar ⚙️
                </Button>
                <Button mode="outlined" onPress={() => this.moveProfileScreen()}>
-               👤 Profil 👤
+                 👤 Profil 👤
                </Button>
                <Button mode="outlined" onPress={() => this.logoutUser()}>
-               🧐 Çıkış Yap 🧐
+                 🧐 Çıkış Yap 🧐
                </Button>
              </View>
 

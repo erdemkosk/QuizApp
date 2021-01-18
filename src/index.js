@@ -11,7 +11,8 @@ import {
   QuizScreen,
   QuizBasicScreen,
   SettingsScreen,
-  ProfileScreen
+  ProfileScreen,
+  ToptenScreen,
 } from './screens';
 
 const Router = createStackNavigator(
@@ -25,7 +26,8 @@ const Router = createStackNavigator(
     QuizScreen,
     QuizBasicScreen,
     SettingsScreen,
-    ProfileScreen
+    ProfileScreen,
+    ToptenScreen
   },
   {
     initialRouteName: 'AuthLoadingScreen',

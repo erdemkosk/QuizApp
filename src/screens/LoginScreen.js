@@ -71,7 +71,6 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate('HomeScreen')} />
 
       <Image source={require('../../assets/logo.png')} style={{ width: 275 }} resizeMode="contain" />
 

@@ -9632,7 +9632,7 @@
     "through2" "^1.0.0"
     "xtend" "^4.0.0"
 
-"moment@2.x.x":
+"moment@^2.29.1", "moment@2.x.x":
   "integrity" "sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
   "version" "2.29.1"
@@ -11060,11 +11060,6 @@
   "resolved" "https://registry.npmjs.org/react-native-status-bar-height/-/react-native-status-bar-height-2.6.0.tgz"
   "version" "2.6.0"
 
-"react-native-timeline-listview@^0.2.3":
-  "integrity" "sha1-5Gt/D9LCIGMp7uYZR5XgOJmv6II="
-  "resolved" "https://registry.npmjs.org/react-native-timeline-listview/-/react-native-timeline-listview-0.2.3.tgz"
-  "version" "0.2.3"
-
 "react-native-unimodules@~0.11.0":
   "integrity" "sha512-iIxcr9TmgciM/lzOvak+lBkdeGKw74kbMIkr1zxKskhOwLq19kGtYl0/DQm+jcwbsEzTX83SaEPX0C0jqbfb/A=="
   "resolved" "https://registry.npmjs.org/react-native-unimodules/-/react-native-unimodules-0.11.0.tgz"
@@ -11152,7 +11147,7 @@
     "use-subscription" "^1.0.0"
     "whatwg-fetch" "^3.0.0"
 
-"react-native@*", "react-native@^0.63.0-0", "react-native@>= 0.4", "react-native@>= 0.60.0", "react-native@>=0.38.0", "react-native@>=0.42.0", "react-native@>=0.43.0", "react-native@>=0.56.0", "react-native@>=0.57", "react-native@>=0.60", "react-native@>=0.63.0", "react-native@~0.63.3":
+"react-native@*", "react-native@^0.63.0-0", "react-native@>= 0.60.0", "react-native@>=0.38.0", "react-native@>=0.42.0", "react-native@>=0.43.0", "react-native@>=0.56.0", "react-native@>=0.57", "react-native@>=0.60", "react-native@>=0.63.0", "react-native@~0.63.3":
   "integrity" "sha512-I4kM8kYO2mWEYUFITMcpRulcy4/jd+j9T6PbIzR0FuMcz/xwd+JwHoLPa1HmCesvR1RDOw9o4D+OFLwuXXfmGw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.63.4.tgz"
   "version" "0.63.4"
