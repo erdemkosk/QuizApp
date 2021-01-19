@@ -10,6 +10,7 @@ const API_URLS = {
   UPDATE_MEMBER: `${baseUrl}member/?id=`,
   STATISTIC: `${baseUrl}statistic/`,
   TOP_TEN: `${baseUrl}member/top-ten/`,
+  UPDATE_STATISTICS: `${baseUrl}member/update-statistic/`,
 };
 
 const ERROR_CODES = {

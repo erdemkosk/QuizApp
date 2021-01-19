@@ -13,7 +13,7 @@ const postMemberLogin = async ({ email, password }) => {
     switch (error.response.status) {
       case ERROR_CODES.NOT_FOUND:
         return {
-          error: 'Böyle bir kullanıcı bilgisi bulamadık.'
+          error: 'Şifreniz hatalı yada böyle bir kullanıcı bulunmamaktadır.'
         };
       case ERROR_CODES.VALUE_NOT_RIGHT:
         return {
@@ -66,7 +66,7 @@ const forgetPassword = async ({ email }) => {
     switch (error.response.status) {
       case ERROR_CODES.NOT_FOUND:
         return {
-          error: 'Şuan mail sistemimizde bir hata oluştu. Lütfen daha sonra tekrar deneyin.'
+          error: 'Sistemde böyle bir kullanıcı bulamadık. Tekrar deneyin.'
         };
       default:
         return {
@@ -152,6 +152,34 @@ const getTopten = async () => {
   }
 };
 
+const updateStatistic = async ({
+  id, isRightAnswer, point, token
+}) => {
+  try {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
+    const data = {
+      isRightAnswer,
+      difficulty: point,
+    };
+
+    const response = await axios.put(API_URLS.UPDATE_STATISTICS + id, data, options);
+
+    return response.data.results;
+  } catch (error) {
+    switch (error.response.status) {
+      default:
+        return {
+          error: 'Internet bağlantınızı kontrol edin !'
+        };
+    }
+  }
+};
+
 module.exports = {
   postMemberLogin,
   postMemberRegister,
@@ -159,4 +187,5 @@ module.exports = {
   getMember,
   updateMember,
   getTopten,
+  updateStatistic,
 };

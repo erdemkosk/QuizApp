@@ -16,6 +16,8 @@ import { ProgressBar, Chip } from 'react-native-paper';
 import CountDown from 'react-native-countdown-component';
 import * as Speech from 'expo-speech';
 import { getQuestion, getFillInBlanks } from '../controllers/question';
+import { updateStatistic } from '../controllers/member';
+import { getItem } from '../services/deviceStorage';
 import {
   RETRY_MESSAGES, COLORS, STATE_COLORS, QUIZ_TYPES, SPEED_ICONS,
 } from '../core/constraint';
@@ -49,11 +51,14 @@ export default class QuizScreen extends Component {
       userDifficultyState: 1,
       isVisibleSFailedModel: false,
       userPoint: 0,
+      token: '',
+      id: '',
     };
   }
 
   componentDidMount = () => {
     (async () => {
+      await this.loadToken();
       await this.fetchQuestion();
     })();
 
@@ -104,6 +109,21 @@ export default class QuizScreen extends Component {
     }
   };
 
+  loadToken = async () => {
+    const value = await getItem({ key: 'token' });
+    const response = JSON.parse(value);
+    this.setState({
+      token: response.token,
+      id: response.id,
+    });
+  }
+
+  sendStatistic = async () => {
+    await updateStatistic({
+      id: this.state.id, isRightAnswer: this.state.isAnsweredSuccesfull, point: this.state.userDifficultyState, token: this.state.token
+    });
+  };
+
   buttonClickHandle = async (buttonNumber) => {
     // Avoid to generate new state check until reset
     if (!this.state.button1clicked
@@ -151,6 +171,7 @@ export default class QuizScreen extends Component {
       }, 1000);
 
       setTimeout(() => {
+        this.sendStatistic();
         this.startTime();
         this.fetchQuestion();
         this.resetStates();

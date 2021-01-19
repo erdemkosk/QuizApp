@@ -104,12 +104,33 @@ export default class ProfileInfo extends Component {
           </CardItem>
           <CardItem>
             <Icon active name="ios-hammer" />
-            <Text>Liderlik</Text>
+            <Text>Liderlik Sıralaması</Text>
             <Right>
               <Text >
                 {this.state.member.rank}
                 . kişi
               </Text>
+            </Right>
+          </CardItem>
+          <CardItem>
+            <Icon active name="ios-paper" />
+            <Text>Yanıtlanan Soru</Text>
+            <Right>
+              <Text >{this.state.member.statistic.totalQuestion}</Text>
+            </Right>
+          </CardItem>
+          <CardItem>
+            <Icon active name="ios-heart" />
+            <Text>Doğru Cevaplanan</Text>
+            <Right>
+              <Text >{this.state.member.statistic.totalRightAnswers}</Text>
+            </Right>
+          </CardItem>
+          <CardItem>
+            <Icon active name="ios-heart-dislike" />
+            <Text>Yanlış Cevaplanan</Text>
+            <Right>
+              <Text >{this.state.member.statistic.totalWrongAnswers}</Text>
             </Right>
           </CardItem>
           <CardItem />
