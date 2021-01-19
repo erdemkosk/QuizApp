@@ -6,7 +6,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import {
-  StyleSheet, ImageBackground, Animated, Image, View
+  StyleSheet, ImageBackground, Animated, Image, View, Platform
 } from 'react-native';
 import {
   Body, Left, Badge, Button, Header, Content, Card, CardItem, Text, Icon, Right, Form, Picker
@@ -41,7 +41,15 @@ export default class QuizScreen extends Component {
       isAnsweredSuccesfull: false,
       successfullCount: 0,
       failedCount: 0,
-      userDifficultyLevel: '1',
+      userDifficultyLevel: 1,
+      difficulties: [
+        { label: 'Seviye: A1', id: 1 },
+        { label: 'Seviye: A2', id: 2 },
+        { label: 'Seviye: B1', id: 3 },
+        { label: 'Seviye: B2', id: 4 },
+        { label: 'Seviye: C1', id: 5 },
+        { label: 'Seviye: C2', id: 6 },
+      ],
     };
   }
 
@@ -130,7 +138,7 @@ export default class QuizScreen extends Component {
     }
   };
 
-  onValueChange(value : string) {
+  onValueChange(value) {
     this.setState({
       userDifficultyLevel: value
     });
@@ -297,24 +305,21 @@ export default class QuizScreen extends Component {
                  <Badge primary style={{ backgroundColor: '#6C757D' }}>
                    <Form>
                      <Picker
-                       mode="dropdown"
+
                        iosHeader="Zorluk Seviyesi"
-                       iosIcon={<Icon name="arrow-down" />}
-                       headerStyle={{ backgroundColor: '#6C757D' }}
-                       headerBackButtonTextStyle={{ color: '#fff' }}
-                       headerTitleStyle={{ color: '#fff' }}
+                       style={{ width:(Platform.OS === 'ios') ? undefined : 160}}
+                       Header="Zorluk Seviyesi"
+                       mode="dropdown"
+                       iosIcon={<Icon style={{ color: '#FFFFFF' }} name="arrow-down" />}
                        textStyle={{ color: '#FFFFFF', fontWeight: 'bold' }}
-                       itemTextStyle={{ color: '#6C757D' }}
                        selectedValue={this.state.userDifficultyLevel}
-                       onValueChange={this.onValueChange.bind(this)}
+                       onValueChange={(value) => this.onValueChange(value)}
                      >
-                       <Picker.Item itemTextStyle={{ color: '#FFFFFF' }} label="Seviye: A1" value="1" />
-                       <Picker.Item itemTextStyle={{ color: '#788ad2' }} label="Seviye: A2" value="2" />
-                       <Picker.Item itemTextStyle={{ color: '#788ad2' }} label="Seviye: B1" value="3" />
-                       <Picker.Item itemTextStyle={{ color: '#788ad2' }} label="Seviye: B2" value="4" />
-                       <Picker.Item itemTextStyle={{ color: '#788ad2' }} label="Seviye: C1" value="5" />
-                       <Picker.Item itemTextStyle={{ color: '#788ad2' }} label="Seviye: C2" value="6" />
+                       {this.state.difficulties.map((branches, i) => (
+                         <Picker.Item label={branches.label} value={branches.id} key={i} />
+                       ))}
                      </Picker>
+
                    </Form>
                  </Badge>
                </View>
