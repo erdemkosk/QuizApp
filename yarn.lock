@@ -2092,7 +2092,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unimodules/core@~5.5.0":
+"@unimodules/core@*", "@unimodules/core@~5.5.0":
   "integrity" "sha512-i99Dw9Ie/8hSCn80hq6nKlklINdtOhhNqRf2BbF0xs03Ej/WYHsp6NaXReTifI5I7OP5djArEu2oYdZAFxFvbA=="
   "resolved" "https://registry.npmjs.org/@unimodules/core/-/core-5.5.0.tgz"
   "version" "5.5.0"
@@ -3456,7 +3456,7 @@
   "resolved" "https://registry.npmjs.org/babylon/-/babylon-6.18.0.tgz"
   "version" "6.18.0"
 
-"badgin@^1.1.2":
+"badgin@^1.1.2", "badgin@^1.1.5":
   "integrity" "sha512-EGbhb5OwZreHS0vd8tFLzdWBqvz3dFREf1sYK5EtivtTDUkYCLSEKz1KvXJ4MBHAyKGDymx8wYPCQwrftQBifw=="
   "resolved" "https://registry.npmjs.org/badgin/-/badgin-1.1.8.tgz"
   "version" "1.1.8"
@@ -5702,6 +5702,11 @@
     "jest-message-util" "^25.5.0"
     "jest-regex-util" "^25.2.6"
 
+"expo-application@~2.3.0":
+  "integrity" "sha512-Jbx8iWAjL5JOvXNUnFaTr5PlMgs8k4MV6SGonYw/a21bWDDERyJQc9EYnaoaSJJJeE/4neVsF7Q3GN1QPz7pUA=="
+  "resolved" "https://registry.npmjs.org/expo-application/-/expo-application-2.3.0.tgz"
+  "version" "2.3.0"
+
 "expo-asset@~8.2.0":
   "integrity" "sha512-Z4D8jcN19GJ/pCqm6slP+Yhao1TP1RkSK/NIHpMKlkz36aqSh0V58J97zvwb1WdkYef5evAzj2uDGpH/VwLOdQ=="
   "resolved" "https://registry.npmjs.org/expo-asset/-/expo-asset-8.2.0.tgz"
@@ -5713,7 +5718,7 @@
     "path-browserify" "^1.0.0"
     "url-parse" "^1.4.4"
 
-"expo-constants@~9.2.0":
+"expo-constants@^9.2.0", "expo-constants@~9.2.0", "expo-constants@9.2.0":
   "integrity" "sha512-WKwiEMvBgPrEPEyZKm21UUB2KWQux9OCWf6ZDORLTln7kO3rsbaJEprfWUWTP7AxyaLMYfN+/0WFHjZc25SZWQ=="
   "resolved" "https://registry.npmjs.org/expo-constants/-/expo-constants-9.2.0.tgz"
   "version" "9.2.0"
@@ -5771,6 +5776,16 @@
   "integrity" "sha512-HsPyn/S73LS/LKpK0Cd/H9Dm9PohbnojYUM475s9DEeOBQitYbnSCKNdSz5vkG+Fqqh6mh4eHPy9dF/21I2rkg=="
   "resolved" "https://registry.npmjs.org/expo-location/-/expo-location-9.0.0.tgz"
   "version" "9.0.0"
+
+"expo-notifications@~0.7.2":
+  "integrity" "sha512-a5QagTFObadEyWTDhAeHnzscLIUTIBF+iLsfKftegZjQIcv20mxu9Aom/e6OfMNg9470XV/HuuHaO9p+JaY9cg=="
+  "resolved" "https://registry.npmjs.org/expo-notifications/-/expo-notifications-0.7.2.tgz"
+  "version" "0.7.2"
+  dependencies:
+    "badgin" "^1.1.5"
+    "expo-application" "~2.3.0"
+    "expo-constants" "9.2.0"
+    "uuid" "^3.4.0"
 
 "expo-permissions@~9.3.0":
   "integrity" "sha512-ylSJZVvEGJVFTKsFrUL2S6gCvFt+/o8TJ3xT4WaMjHe2/2Z7R8ng6NR47Kt54t7XBIV/SZ7DIY9uRiR7TPuNYA=="

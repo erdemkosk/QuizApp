@@ -1,19 +1,30 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable global-require */
-import React, { Component } from 'react';
+import React, {
+  Component, createRef
+} from 'react';
 import {
-  StyleSheet, Image, View, Animated
+  StyleSheet, View, Animated, Platform
 } from 'react-native';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
 
-import { Container, Content } from 'native-base';
+import { Container } from 'native-base';
 import Background from '../components/Background';
-import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
 import { removeItem, getItem } from '../services/deviceStorage';
-import { getMember } from '../controllers/member';
+import { getMember, setNotificationId } from '../controllers/member';
 import {
   QUIZ_TYPES,
 } from '../core/constraint';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -22,13 +33,18 @@ export default class Dashboard extends Component {
     this.state = {
       token: '',
       id: '',
+      notificationId: '',
       member: {},
       startValue: new Animated.Value(0.7),
       endValue: 1.1,
+      expoPushToken: '',
+      notification: false,
     };
   }
 
   componentDidMount = () => {
+    const notificationListener = createRef();
+    const responseListener = createRef();
     this.loadToken();
 
     this.startSpring();
@@ -38,6 +54,61 @@ export default class Dashboard extends Component {
       await this.loadMember();
       this.startSpring();
     });
+
+    this.registerForPushNotificationsAsync().then((notificationId) => this.setState({
+      notificationId,
+    }));
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
+      this.setState({
+        notification,
+      });
+    });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }
+
+  registerForPushNotificationsAsync = async () => {
+    let notificationId;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      notificationId = (await Notifications.getExpoPushTokenAsync()).data;
+
+      await setNotificationId({
+        id: this.state.id, token: this.state.token, notificationId
+      });
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [250, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    return notificationId;
   }
 
   loadToken = async () => {

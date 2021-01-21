@@ -180,6 +180,33 @@ const updateStatistic = async ({
   }
 };
 
+const setNotificationId = async ({
+  id, token, notificationId
+}) => {
+  try {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
+    const data = {
+      notificationId,
+    };
+
+    const response = await axios.put(API_URLS.SET_NOTIFICATION_ID + id, data, options);
+
+    return response.data.results;
+  } catch (error) {
+    switch (error.response.status) {
+      default:
+        return {
+          error: 'Internet bağlantınızı kontrol edin !'
+        };
+    }
+  }
+};
+
 module.exports = {
   postMemberLogin,
   postMemberRegister,
@@ -188,4 +215,5 @@ module.exports = {
   updateMember,
   getTopten,
   updateStatistic,
+  setNotificationId,
 };

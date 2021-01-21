@@ -11,6 +11,7 @@ const API_URLS = {
   STATISTIC: `${baseUrl}statistic/`,
   TOP_TEN: `${baseUrl}member/top-ten/`,
   UPDATE_STATISTICS: `${baseUrl}member/update-statistic/`,
+  SET_NOTIFICATION_ID: `${baseUrl}member/set-notification/`,
 };
 
 const ERROR_CODES = {

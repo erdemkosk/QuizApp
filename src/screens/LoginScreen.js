@@ -10,7 +10,7 @@ import BackButton from '../components/BackButton';
 import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
 import { postMemberLogin } from '../controllers/member';
-import { saveItem, getItem } from '../services/deviceStorage';
+import { saveItem, getItem, removeItem } from '../services/deviceStorage';
 import Toast from '../components/Toast';
 
 const LoginScreen = ({ navigation }) => {
@@ -51,6 +51,13 @@ const LoginScreen = ({ navigation }) => {
       setLoading(false);
       return;
     }
+
+    await Promise.all([
+      await removeItem({
+        key: 'previous-user-email'
+      }), await removeItem({
+        key: 'token',
+      })]);
 
     await Promise.all([
       await saveItem({
