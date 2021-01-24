@@ -53,6 +53,7 @@ export default class Dashboard extends Component {
     navigation.addListener('willFocus', async () => {
       await this.loadMember();
       this.startSpring();
+      this.loadToken();
     });
 
     this.registerForPushNotificationsAsync().then((notificationId) => this.setState({
@@ -154,7 +155,7 @@ export default class Dashboard extends Component {
    };
 
    moveProfileScreen= async () => {
-     this.props.navigation.navigate('ProfileScreen', { member: this.state.member });
+     this.props.navigation.navigate('ProfileScreen');
    };
 
    moveToptenScreen= async () => {

@@ -12,36 +12,58 @@ import { ProgressBar, Chip } from 'react-native-paper';
 import UserAvatar from 'react-native-user-avatar';
 import ProfileInfo from '../components/ProfileInfo';
 import ProfileEdit from '../components/ProfileEdit';
+import { getMember } from '../controllers/member';
+import { getItem } from '../services/deviceStorage';
 
 export default class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = { isEdit: false, member: '' };
+    this.state = {
+      isEdit: false,
+      member: '',
+      token: '',
+      id: '',
+    };
   }
 
   componentDidMount() {
-    const { member } = this.props.navigation.state.params;
-
-    this.setState({
-      member,
-    });
+    (async () => {
+      await this.loadToken();
+      await this.loadMember();
+    })();
   }
 
   navigateToDashboard = async () => {
     this.props.navigation.navigate('Dashboard');
   };
 
-  renderUserInfoOrEditData() {
-    const { params } = this.props.navigation.state;
+  loadToken = async () => {
+    const value = await getItem({ key: 'token' });
+    const response = JSON.parse(value);
+    this.setState({
+      token: response.token,
+      id: response.id,
+    });
+    await this.loadMember();
+  }
 
+  loadMember = async () => {
+    const member = await getMember({ id: this.state.id, token: this.state.token });
+
+    this.setState({
+      member,
+    });
+  }
+
+  renderUserInfoOrEditData() {
     switch (this.state.isEdit) {
       case true:
 
-        return (<ProfileEdit navigateToDashboard={this.navigateToDashboard} Member={params.member} />);
+        return (<ProfileEdit navigateToDashboard={this.navigateToDashboard} Member={this.state.member} />);
         break;
       case false:
 
-        return (<ProfileInfo Member={params.member} />);
+        return (<ProfileInfo Member={this.state.member} />);
         break;
     }
   }
@@ -96,7 +118,7 @@ export default class Profile extends Component {
 
           <View style={styles.header}>
             <View style={styles.headerContent}>
-              <UserAvatar color="#FFFFFF" size={90} bgColor="#1266F1" name= {this.state.member.nameSurname} />
+              <UserAvatar color="#FFFFFF" size={90} bgColor="#1266F1" name={this.state.member.nameSurname} />
 
               <Text style={styles.name}>
                 {this.state.member.nameSurname}

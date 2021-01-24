@@ -26,6 +26,13 @@ const LoginScreen = ({ navigation }) => {
         setEmail({ value: userPreviosLoginInfo });
       }
     }
+
+    navigation.addListener('willFocus', async () => {
+      await removeItem({
+        key: 'token',
+      });
+      setPassword({ value: '', error: '' });
+    });
     // Execute the created function directly
     loadUserMail();
   }, []);
@@ -52,12 +59,9 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
 
-    await Promise.all([
-      await removeItem({
-        key: 'previous-user-email'
-      }), await removeItem({
-        key: 'token',
-      })]);
+    await removeItem({
+      key: 'previous-user-email'
+    });
 
     await Promise.all([
       await saveItem({

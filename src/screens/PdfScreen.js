@@ -32,9 +32,7 @@ export default class PdfScreen extends Component {
             <Image source={require('../../assets/logo.png')} style={{ width: 150 }} resizeMode="contain" />
           </Body>
           <Right>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
+           
           </Right>
         </Header>
         <View style={styles.container}>

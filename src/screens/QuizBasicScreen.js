@@ -245,9 +245,7 @@ export default class QuizScreen extends Component {
                <Image source={require('../../assets/logo.png')} style={{ width: 150 }} resizeMode="contain" />
              </Body>
              <Right>
-               <Button transparent>
-                 <Icon name="menu" />
-               </Button>
+               
              </Right>
            </Header>
            <Content padder contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>

@@ -13,6 +13,7 @@ import moment from 'moment';
 export default class ProfileInfo extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       likesIsReady: false, member: this.props.Member, token: '', members: 0, words: 0,
     };
