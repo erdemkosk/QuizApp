@@ -66,7 +66,7 @@ export default class SettingsScreen extends Component {
                   <Text>{item.member.nameSurname.toUpperCase() }</Text>
                   <ProgressBar progress={item.member.currentExperience / item.member.levelExperience} color="#1266F1" />
                   <Text note numberOfLines={1} style={{ margin: 2 }}>
-                    Toplam:{item.member.statistic.totalQuestion} Doğru:{item.member.statistic.totalRightAnswers} Yanlış:{item.member.statistic.totalWrongAnswers}
+                    T:{item.member.statistic.totalQuestion} D:{item.member.statistic.totalRightAnswers} Y:{item.member.statistic.totalWrongAnswers}
                   </Text>
                 </Body>
                 <Right>

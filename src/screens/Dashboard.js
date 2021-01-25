@@ -198,28 +198,29 @@ export default class Dashboard extends Component {
 
              <View>
                <Button mode="outlined" onPress={() => this.moveQuizSecreen()}>
-                 😱 Yarışma 😱
-               </Button>
-               <Button mode="outlined" onPress={() => this.moveBasicQuizSecreen()}>
-                 🥸 Antreman 🥸
+               ✌️ Yarışma
                </Button>
                <Button mode="outlined" onPress={() => this.moveBlankInFillsScreen()}>
-                 😎 Boşluk Doldurma 😎
+               💪 Boşluk Doldurma
                </Button>
+               <Button mode="outlined" onPress={() => this.moveBasicQuizSecreen()}>
+               🏊 Antreman
+               </Button>
+
                <Button mode="outlined" onPress={() => this.moveToptenScreen()}>
-                 👑 Liderlik Tablosu 👑
+                 👑 Liderlik Tablosu
                </Button>
                <Button mode="outlined" onPress={() => this.moveSettingsScreen()}>
-                 ⚙️ Ayarlar ⚙️
+                 🦺 Ayarlar
                </Button>
                <Button mode="outlined" onPress={() => this.moveProfileScreen()}>
-                 👤 Profil 👤
+               🧑‍🎓 Profil
                </Button>
                <Button mode="outlined" onPress={() => this.movePdfScreen()}>
-                 🧾 Pdf Dersler 🧾
+               ✍️ Eğitim
                </Button>
                <Button mode="outlined" onPress={() => this.logoutUser()}>
-                 🧐 Çıkış Yap 🧐
+               ✋ Çıkış Yap
                </Button>
              </View>
 

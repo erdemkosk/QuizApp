@@ -125,6 +125,10 @@ const updateMember = async ({
         return {
           error: 'Lütfen sistemde tekrar giriş yapın!'
         };
+      case ERROR_CODES.VALUE_NOT_RIGHT:
+        return {
+          error: 'Şifreniz 6 karakterden az ve isminiz boş olamaz 🙃'
+        };
       default:
         return {
           error: 'Internet bağlantınızı kontrol edin !'

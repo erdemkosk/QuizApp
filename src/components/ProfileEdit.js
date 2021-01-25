@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {
-  View, TextInput, StyleSheet, ScrollView, Image
+  TextInput,
 } from 'react-native';
 import {
-  Container, Header, Content, Card, CardItem, Text, Icon, Right, Left, Body, Title, Button
+  Content, Card, CardItem, Text, Icon, Right, Button
 } from 'native-base';
+import Toast from './Toast';
 
-import {  getItem } from '../services/deviceStorage';
+import { getItem } from '../services/deviceStorage';
 
 import { updateMember } from '../controllers/member';
 
@@ -17,20 +18,32 @@ export default class ProfileEdit extends Component {
       member: this.props.Member,
       userName: this.props.Member.nameSurname,
       password: '',
+      error: '',
     };
   }
 
   updateUser = async () => {
-  
     if (this.state.userName && this.state.password) {
       const value = await getItem({ key: 'token' });
       const response = JSON.parse(value);
 
-      await updateMember({
-       id:this.state.member._id, nameSurname: this.state.userName, email: this.state.member.email, password: this.state.password, token: response.token
+      const result = await updateMember({
+        id: this.state.member._id, nameSurname: this.state.userName, email: this.state.member.email, password: this.state.password, token: response.token
       });
 
+      if (result.error) {
+        this.setState({
+          error: result.error,
+        });
+        return;
+      }
+
       this.props.navigateToDashboard();
+    }
+    else{
+      this.setState({
+        error: 'İsminiz yada şifreniz boş olamaz 😅',
+      });
     }
   };
 
@@ -42,7 +55,7 @@ export default class ProfileEdit extends Component {
             <Text style={{ color: '#2D313A' }}>Kullanıcı Hakkında</Text>
           </CardItem>
           <CardItem>
-            <Icon active name="finger-print" />
+            <Icon style={{ color: '#ff793f' }} active name="md-contacts" />
             <Text>Ad ve Soyad</Text>
             <Right>
               <TextInput
@@ -62,7 +75,7 @@ export default class ProfileEdit extends Component {
             </Right>
           </CardItem>
           <CardItem>
-            <Icon active name="finger-print" />
+            <Icon style={{ color: '#cd6133' }} active name="md-keypad" />
             <Text>Şifre</Text>
             <Right>
               <TextInput
@@ -91,7 +104,7 @@ export default class ProfileEdit extends Component {
                 onPress={() => {
                   this.updateUser();
                 }}
-                style={{ backgroundColor: '#BA1E5D', width: 120 }}
+                style={{ backgroundColor: '#1266F1', width: 120 }}
               >
                 <Icon name="done-all" />
                 <Text>Kaydet!</Text>
@@ -99,6 +112,12 @@ export default class ProfileEdit extends Component {
             </Right>
           </CardItem>
         </Card>
+        <Toast
+          message={this.state.error}
+          onDismiss={() => this.setState({
+            error: ''
+          })}
+        />
       </Content>
 
     );

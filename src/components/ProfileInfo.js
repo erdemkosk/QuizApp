@@ -6,9 +6,9 @@ import {
   Container, Header, Content, Card, CardItem, Text, Icon, Right, Left, Body, Title, Button
 } from 'native-base';
 
+import moment from 'moment';
 import { getStatistic } from '../controllers/statistic';
 import { removeItem, getItem } from '../services/deviceStorage';
-import moment from 'moment';
 
 export default class ProfileInfo extends Component {
   constructor(props) {
@@ -50,31 +50,31 @@ export default class ProfileInfo extends Component {
             <Text style={{ color: '#2D313A' }}>Uygulama Hakkında</Text>
           </CardItem>
           <CardItem>
-            <Icon active name="ios-body" />
+            <Icon style={{ color: '#e15f41' }} active name="ios-body" />
             <Text>Toplam Kullanıcı Sayısı</Text>
             <Right>
-              <Text >{this.state.members}</Text>
+              <Text>{this.state.members}</Text>
             </Right>
           </CardItem>
           <CardItem>
-            <Icon active name="md-flame" />
+            <Icon style={{ color: '#6ab04c' }} active name="md-flame" />
             <Text>Toplam Kelime Sayısı</Text>
             <Right>
-              <Text >{this.state.words}</Text>
+              <Text>{this.state.words}</Text>
             </Right>
           </CardItem>
           <CardItem header bordered>
             <Text style={{ color: '#2D313A' }}>Kullanıcı Hakkında</Text>
           </CardItem>
           <CardItem>
-            <Icon active name="finger-print" />
+            <Icon style={{ color: '#574b90' }} active name="finger-print" />
             <Text>Ad ve Soyad</Text>
             <Right>
-              <Text >{this.state.member.nameSurname}</Text>
+              <Text>{this.state.member.nameSurname}</Text>
             </Right>
           </CardItem>
           <CardItem>
-            <Icon active name="md-hourglass" />
+            <Icon style={{ color: '#303952' }} active name="md-hourglass" />
             <Text>Katılım Tarihi</Text>
             <Right>
               <Text>{moment(this.state.member.createdAt).format('DD/MM/YYYY')}</Text>
@@ -86,17 +86,17 @@ export default class ProfileInfo extends Component {
             <Text style={{ color: '#2D313A' }}>Seviye</Text>
           </CardItem>
           <CardItem>
-            <Icon active name="md-happy" />
+            <Icon style={{ color: '#0984e3' }} active name="md-happy" />
             <Text>Seviye</Text>
             <Right>
-              <Text >{this.state.member.level}</Text>
+              <Text>{this.state.member.level}</Text>
             </Right>
           </CardItem>
           <CardItem>
-            <Icon active name="ios-jet" />
+            <Icon style={{ color: '#00b894' }} active name="md-checkmark-circle-outline" />
             <Text>Deneyim Puanı</Text>
             <Right>
-              <Text >
+              <Text>
                 {this.state.member.currentExperience}
                 /
                 {this.state.member.levelExperience}
@@ -104,34 +104,34 @@ export default class ProfileInfo extends Component {
             </Right>
           </CardItem>
           <CardItem>
-            <Icon active name="ios-hammer" />
+            <Icon style={{ color: '#6c5ce7' }} active name="md-flag" />
             <Text>Liderlik Sıralaması</Text>
             <Right>
-              <Text >
+              <Text>
                 {this.state.member.rank}
                 . kişi
               </Text>
             </Right>
           </CardItem>
           <CardItem>
-            <Icon active name="ios-paper" />
+            <Icon style={{ color: '#fdcb6e' }} active name="ios-paper" />
             <Text>Yanıtlanan Soru</Text>
             <Right>
-              <Text >{this.state.member.statistic.totalQuestion}</Text>
+              <Text>{this.state.member.statistic.totalQuestion}</Text>
             </Right>
           </CardItem>
           <CardItem>
-            <Icon active name="ios-heart" />
+            <Icon style={{ color: '#d63031' }} active name="ios-heart" />
             <Text>Doğru Cevaplanan</Text>
             <Right>
-              <Text >{this.state.member.statistic.totalRightAnswers}</Text>
+              <Text>{this.state.member.statistic.totalRightAnswers}</Text>
             </Right>
           </CardItem>
           <CardItem>
-            <Icon active name="ios-heart-dislike" />
+            <Icon style={{ color: '#ff7675' }} active name="ios-heart-dislike" />
             <Text>Yanlış Cevaplanan</Text>
             <Right>
-              <Text >{this.state.member.statistic.totalWrongAnswers}</Text>
+              <Text>{this.state.member.statistic.totalWrongAnswers}</Text>
             </Right>
           </CardItem>
           <CardItem />
