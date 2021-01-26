@@ -19,9 +19,7 @@ export default class PdfScreen extends Component {
     this.props.navigation.navigate('Dashboard');
   }
 
-
   render() {
-    
     return (
       <Container>
         <Header>
@@ -39,8 +37,7 @@ export default class PdfScreen extends Component {
           <WebView
             bounces={false}
             startInLoadingState
-            startInLoadingState={true}
-    renderLoading={() => <Spinner color="blue" />}
+            renderLoading={() => <Spinner color="blue" />}
             scrollEnabled
             source={{ uri: 'http://docs.google.com/gview?embedded=true&url=http://www.africau.edu/images/default/sample.pdf' }}
           />

@@ -117,8 +117,8 @@ const LoginScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <Button loading={loading} mode="contained" onPress={onLoginPressed}>
-        Giriş Yap 🤟
+      <Button uppercase = {false} loading={loading} mode="contained" onPress={onLoginPressed}>
+        GİRİŞ YAP 🤟
       </Button>
 
       <View style={styles.row}>

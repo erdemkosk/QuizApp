@@ -99,8 +99,9 @@ const RegisterScreen = ({ navigation }) => {
         mode="contained"
         onPress={onSignUpPressed}
         style={styles.button}
+        uppercase = {false}
       >
-        Hesap Oluştur
+        HESAP OLUŞTUR
       </Button>
 
       <View style={styles.row}>

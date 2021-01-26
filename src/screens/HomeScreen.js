@@ -20,11 +20,11 @@ const HomeScreen = ({ navigation }) => (
       İngilizce kelime öğrenmenin en kolay yolu 🤙. Boş zamanlarında senin için oluşturulan ingilizce kelime testlerini cevapla 🙏 Kendini geliştir!
       </Paragraph>
 
-      <Button mode="outlined" onPress={() => navigation.navigate('LoginScreen')}>
-        <Text>Giriş Yap</Text>
+      <Button uppercase = {false} mode="outlined" onPress={() => navigation.navigate('LoginScreen')}>
+        <Text>GİRİŞ YAP</Text>
       </Button>
-      <Button mode="outlined" onPress={() => navigation.navigate('RegisterScreen')}>
-        <Text>Üye Ol</Text>
+      <Button uppercase = {false} mode="outlined" onPress={() => navigation.navigate('RegisterScreen')}>
+        <Text>ÜYE OL</Text>
       </Button>
     </Background>
   </Container>

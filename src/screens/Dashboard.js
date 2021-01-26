@@ -197,30 +197,30 @@ export default class Dashboard extends Component {
              />
 
              <View>
-               <Button mode="outlined" onPress={() => this.moveQuizSecreen()}>
-               ✌️ Yarışma
+               <Button uppercase = {false} mode="outlined" onPress={() => this.moveQuizSecreen()}>
+               ✌️ YARIŞMA
                </Button>
-               <Button mode="outlined" onPress={() => this.moveBlankInFillsScreen()}>
-               💪 Boşluk Doldurma
+               <Button uppercase = {false} mode="outlined" onPress={() => this.moveBlankInFillsScreen()}>
+               💪 BOŞLUK DOLDURMA
                </Button>
-               <Button mode="outlined" onPress={() => this.moveBasicQuizSecreen()}>
-               🏊 Antreman
+               <Button uppercase = {false} mode="outlined" onPress={() => this.moveBasicQuizSecreen()}>
+               🏊 ANTRENMAN
                </Button>
 
-               <Button mode="outlined" onPress={() => this.moveToptenScreen()}>
-                 👑 Liderlik Tablosu
+               <Button uppercase = {false} mode="outlined" onPress={() => this.moveToptenScreen()}>
+                 👑 LİDERLİK TABLOSU
                </Button>
-               <Button mode="outlined" onPress={() => this.moveSettingsScreen()}>
-                 🦺 Ayarlar
+               <Button uppercase = {false} mode="outlined" onPress={() => this.moveSettingsScreen()}>
+                 🦺 AYARLAR
                </Button>
-               <Button mode="outlined" onPress={() => this.moveProfileScreen()}>
-               🧑‍🎓 Profil
+               <Button uppercase = {false} mode="outlined" onPress={() => this.moveProfileScreen()}>
+               🧑‍🎓 PROFİL
                </Button>
-               <Button mode="outlined" onPress={() => this.movePdfScreen()}>
-               ✍️ Eğitim
+               <Button uppercase = {false} mode="outlined" onPress={() => this.movePdfScreen()}>
+               ✍️ EĞİTİM
                </Button>
-               <Button mode="outlined" onPress={() => this.logoutUser()}>
-               ✋ Çıkış Yap
+               <Button uppercase = {false} mode="outlined" onPress={() => this.logoutUser()}>
+               ✋ ÇIKIŞ YAP
                </Button>
              </View>
 
