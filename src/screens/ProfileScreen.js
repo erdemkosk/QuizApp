@@ -6,7 +6,7 @@ import {
   View, TextInput, StyleSheet, ScrollView, Image
 } from 'react-native';
 import {
-  Container, Header, Content, Card, CardItem, Text, Icon, Right, Left, Body, Title, Button
+  Container, Header, Content, Spinner, CardItem, Text, Icon, Right, Left, Body, Title, Button
 } from 'native-base';
 import { ProgressBar, Chip } from 'react-native-paper';
 import UserAvatar from 'react-native-user-avatar';
@@ -101,7 +101,22 @@ export default class Profile extends Component {
 
   render() {
     if (!this.state.member) {
-      return <Text>Loading...</Text>;
+      return (
+        <Container style={styles.container}>
+          <Header>
+          <Left>
+            <Button onPress={() => this.props.navigation.navigate('Dashboard')} transparent>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body />
+          <Right />
+        </Header>
+        <Content >
+        <Spinner  color='blue' />
+        </Content>
+        </Container>
+      )
     }
     return (
       <Container style={styles.container}>
@@ -201,5 +216,16 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 22,
     color: '#696969',
-  }
+  },
+  waitingContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    backgroundColor: '#000000'
+  },
+  spinner: {
+    width: '100%',
+    height: '100%',
+  },
 });

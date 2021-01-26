@@ -16,7 +16,7 @@ import { ProgressBar, Chip } from 'react-native-paper';
 import * as Speech from 'expo-speech';
 import { getQuestion, getFillInBlanks } from '../controllers/question';
 import {
-  RETRY_MESSAGES, COLORS, STATE_COLORS, QUIZ_TYPES, SPEED_ICONS,
+  RETRY_BUTTON_MESSAGES, COLORS, STATE_COLORS, QUIZ_TYPES, SPEED_ICONS,
 } from '../core/constraint';
 
 export default class QuizScreen extends Component {
@@ -254,7 +254,7 @@ export default class QuizScreen extends Component {
                  <CardItem>
                    <Body style={{ alignItems: 'center' }}>
                      <Image source={require('../../assets/logo.png')} style={{ width: 300 }} resizeMode="contain" />
-                     <Text>Kaybettin tekrar oyna</Text>
+                     <Text>İnsanlar bildikleri dil sayısı kadar hayat yaşarlar. (Çek Atasözü) </Text>
                      <Button
                        style={{ marginTop: 30 }}
                        full
@@ -263,7 +263,7 @@ export default class QuizScreen extends Component {
                          this.modelHandler();
                        }}
                      >
-                       <Text>{RETRY_MESSAGES[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
+                       <Text>{RETRY_BUTTON_MESSAGES[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
                      </Button>
                    </Body>
                  </CardItem>

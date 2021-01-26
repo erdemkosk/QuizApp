@@ -34,11 +34,12 @@ const COLORS = {
   DEFAULT: '#6C757D',
 };
 
-const STATE_COLORS = ['#1abc9c', '#3498db', '#8e44ad', '#d35400', '#c0392b'];
+const STATE_COLORS = ['#fdcb6e', '#F2BB05', '#E01A4F', '#1abc9c', '#3498db', '#8e44ad', '#ff9ff3', '#48dbfb', '#1dd1a1', '#32ff7e', '#40407a', '#3742fa', '#ff6b81'];
 
 const SPEED_ICONS = ['speedometer-slow', 'speedometer-medium', 'speedometer'];
 
-const RETRY_MESSAGES = ['Hadi Tekrar Başlayalım 🤙', 'Daha bu başlangıç 🤩', 'Kol Bozuktu 🔥', 'Hızlanmak şart 😋', 'Bir daha deneyeyim 😬'];
+const RETRY_BUTTON_MESSAGES = ['Hadi Tekrar Başlayalım 🤙', 'Daha bu başlangıç 🤩', 'Kol Bozuktu 🔥', 'Hızlanmak şart 😋', 'Bir daha deneyeyim 😬'];
+const RETRY_MESSAGES = ['Kaybettik... Ama olsun ingilizce neydi emekti....\nİnsanlar bildikleri dil sayısı kadar hayat yaşarlar. (Çek Atasözü) ', 'Şansımız Yaver gitmedi... \nBir dil bir insan, iki dil iki insan (Türk Atasözü) ', 'Kaybettik... Tekrar deneriz hallederiz....\nYeni bir dil, yeni bir hayat (İran Atasözü) ', 'Kaybettik... Ne kadar çok kelime o kadar akıcı bir ingilizce...\nBir dil öğren, bir savaşı önle. (Arap Atasözü) '];
 
 module.exports = {
   API_URLS,
@@ -47,5 +48,6 @@ module.exports = {
   RETRY_MESSAGES,
   COLORS,
   STATE_COLORS,
-  QUIZ_TYPES
+  QUIZ_TYPES,
+  RETRY_BUTTON_MESSAGES,
 };

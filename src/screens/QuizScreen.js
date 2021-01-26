@@ -19,7 +19,7 @@ import { getQuestion, getFillInBlanks } from '../controllers/question';
 import { updateStatistic } from '../controllers/member';
 import { getItem } from '../services/deviceStorage';
 import {
-  RETRY_MESSAGES, COLORS, STATE_COLORS, QUIZ_TYPES, SPEED_ICONS,
+  RETRY_BUTTON_MESSAGES, COLORS, STATE_COLORS, QUIZ_TYPES, SPEED_ICONS, RETRY_MESSAGES
 } from '../core/constraint';
 
 export default class QuizScreen extends Component {
@@ -324,7 +324,7 @@ export default class QuizScreen extends Component {
                 <CardItem>
                   <Body style={{ alignItems: 'center' }}>
                     <Image source={require('../../assets/logo.png')} style={{ width: 300 }} resizeMode="contain" />
-                    <Text>Kaybettin tekrar oyna</Text>
+                    <Text >{RETRY_MESSAGES[Math.floor(Math.random() * (3 - 1 + 1)) + 1]}</Text>
                     <Button
                       style={{ marginTop: 30 }}
                       full
@@ -333,7 +333,7 @@ export default class QuizScreen extends Component {
                         this.modelHandler();
                       }}
                     >
-                      <Text>{RETRY_MESSAGES[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
+                      <Text>{RETRY_BUTTON_MESSAGES[Math.floor(Math.random() * (4 - 1 + 1)) + 1]}</Text>
                     </Button>
                   </Body>
                 </CardItem>
@@ -490,5 +490,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%'
   },
+  text: {
+    fontSize: 22,
+    fontFamily: 'OpenSans-Italic'
+  }
 
 });

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import {
-  View, TextInput, StyleSheet, ScrollView, Image
-} from 'react-native';
-import {
-  Container, Header, Content, Card, CardItem, Text, Icon, Right, Left, Body, Title, Button
+  Content, Card, CardItem, Text, Icon, Right
 } from 'native-base';
 
 import moment from 'moment';
 import { getStatistic } from '../controllers/statistic';
-import { removeItem, getItem } from '../services/deviceStorage';
+import { getItem } from '../services/deviceStorage';
 
 export default class ProfileInfo extends Component {
   constructor(props) {
@@ -117,21 +114,21 @@ export default class ProfileInfo extends Component {
             <Icon style={{ color: '#fdcb6e' }} active name="ios-paper" />
             <Text>Yanıtlanan Soru</Text>
             <Right>
-              <Text>{this.state.member.statistic.totalQuestion}</Text>
+              <Text>{this.state.member.statistic ? this.state.member.statistic.totalQuestion : 0}</Text>
             </Right>
           </CardItem>
           <CardItem>
             <Icon style={{ color: '#d63031' }} active name="ios-heart" />
             <Text>Doğru Cevaplanan</Text>
             <Right>
-              <Text>{this.state.member.statistic.totalRightAnswers}</Text>
+              <Text>{this.state.member.statistic ? this.state.member.statistic.totalRightAnswers : 0}</Text>
             </Right>
           </CardItem>
           <CardItem>
             <Icon style={{ color: '#ff7675' }} active name="ios-heart-dislike" />
             <Text>Yanlış Cevaplanan</Text>
             <Right>
-              <Text>{this.state.member.statistic.totalWrongAnswers}</Text>
+              <Text>{this.state.member.statistic ? this.state.member.statistic.totalWrongAnswers : 0}</Text>
             </Right>
           </CardItem>
           <CardItem />
