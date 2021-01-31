@@ -146,7 +146,7 @@ export default class QuizScreen extends Component {
         }
 
         this.setState((prevState) => ({
-          time: prevState.isAnsweredSuccesfull ? prevState.time + prevState.userDifficultyState * 2 : prevState.time,
+          time: prevState.isAnsweredSuccesfull ? prevState.time + prevState.userDifficultyLevel * 2 : prevState.time,
           questionCountPerState: prevState.userDifficultyState * 2,
           isWaiting: false,
           isAnyButtonPressed: true,

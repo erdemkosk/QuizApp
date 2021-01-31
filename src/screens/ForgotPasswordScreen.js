@@ -81,7 +81,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
       <Toast
         type={toast.type}
         message={toast.value}
-        onDismiss={() => setToast({ value: '', type: '' })}
+        onDismiss={() => setToast({ value: '', type: toast.type })}
       />
     </Background>
   );
