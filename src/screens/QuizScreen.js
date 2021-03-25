@@ -312,7 +312,7 @@ export default class QuizScreen extends Component {
               </Button>
             </Left>
             <Body>
-              <Image source={require('../../assets/logo.png')} style={{ width: 150 }} resizeMode="contain" />
+            
             </Body>
             <Right>
               
@@ -323,7 +323,7 @@ export default class QuizScreen extends Component {
               <Card style={{ backgroundColor: 'transparent' }}>
                 <CardItem>
                   <Body style={{ alignItems: 'center' }}>
-                    <Image source={require('../../assets/logo.png')} style={{ width: 300 }} resizeMode="contain" />
+                    <Image source={require('../../assets/logo.png')} style={{ width: 200, marginBottom:10 }} resizeMode="contain" />
                     <Text >{RETRY_MESSAGES[Math.floor(Math.random() * (3 - 1 + 1)) + 1]}</Text>
                     <Button
                       style={{ marginTop: 30 }}

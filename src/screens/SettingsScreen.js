@@ -22,7 +22,7 @@ export default class SettingsScreen extends Component {
               </Button>
             </Left>
             <Body>
-              <Image source={require('../../assets/logo.png')} style={{ width: 150 }} resizeMode="contain" />
+             
             </Body>
             <Right>
              

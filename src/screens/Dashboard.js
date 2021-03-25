@@ -186,7 +186,9 @@ export default class Dashboard extends Component {
              <Animated.Image
                source={require('../../assets/logo.png')}
                style={{
-                 width: 275,
+                 width: 300,
+                 marginBottom: 15,
+
                  transform: [
                    {
                      scale: this.state.startValue,
@@ -209,9 +211,6 @@ export default class Dashboard extends Component {
 
                <Button uppercase = {false} mode="outlined" onPress={() => this.moveToptenScreen()}>
                  👑 LİDERLİK TABLOSU
-               </Button>
-               <Button uppercase = {false} mode="outlined" onPress={() => this.moveSettingsScreen()}>
-                 🦺 AYARLAR
                </Button>
                <Button uppercase = {false} mode="outlined" onPress={() => this.moveProfileScreen()}>
                🧑‍🎓 PROFİL
